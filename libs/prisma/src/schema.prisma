@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -8,11 +7,346 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// references tables
+model investor_types {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
+
+model investor_statuses {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model genders {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model relationships {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model risk_levels {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model address_types {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model religions {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model transaction_types {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model transaction_statuses {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model investors {
+  id                String    @id @default(uuid())
+  first_name        String    @db.VarChar(128)
+  middle_name       String?   @db.VarChar(128)
+  last_name         String    @db.VarChar(128)
+  email             String    @unique
+  email_temp        String? //for changing email
+  email_verified_at DateTime?
+  password          String    @db.VarChar(128)
+  phone             String?   @db.VarChar(32)
+  phone_temp        String? //for changing phone
+  phone_verified_at DateTime?
+  risk_level_id     Int?
+  risk_point        Int?
+  sid               String?   @unique
+  investor_type_id  Int
+  can_txn           Boolean   @default(true)
+  status_id         Int
+
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  deleted_at         DateTime?
+  investor_addresses investor_addresses[]
+  investor_heirs     investor_heirs[]
+  investor_details   investor_details?
+
+  @@map("investors")
+}
+
+model investor_details {
+  id          String   @id @default(uuid())
+  investor_id String   @unique
+  birth_date  DateTime
+  birth_place String   @db.VarChar(128)
+  gender      genders  @default(MALE)
+  tax_id      String?
+  tax_date    String?
+  self_image  String?
+  // cards
+  card_number String?
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  investor investors @relation(fields: [investor_id], references: [id])
+
+  @@map("investor_details")
+}
+
+model investor_heirs {
+  id           Int           @id @default(autoincrement())
+  investor_id  String        @unique
+  name         String
+  relationship relationships
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  deleted_at   DateTime?
+
+  investor investors @relation(fields: [investor_id], references: [id])
+
+  @@map("investor_heirs")
+}
+
+model investor_addresses {
+  id             Int           @id @default(autoincrement())
+  address_type   address_types @default(HOME)
+  investor_id    String
+  province_id    String
+  city_id        String
+  district_id    String
+  subdistrict_id String
+  postal_code    String
+  address        String
+  address_line_2 String?
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+  deleted_at     DateTime?
+
+  investor investors @relation(fields: [investor_id], references: [id])
+
+  @@map("investor_addresses")
+}
+
+model admins {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(128)
+  username   String    @unique
+  password   String    @db.VarChar(128)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@map("admins")
+}
+
+// // Reference data
+// model asset_managers {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @unique
+//   slug      String   @unique @db.VarChar(128)
+//   country   String?  @db.VarChar(64)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   funds mutualfund[]
+// }
+
+// model custodian_banks {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @unique
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   funds mutualfund[]
+// }
+
+// model fund_categories {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @unique // Equity, Fixed Income, Balanced, Money Market, Index
+//   slug      String   @unique @db.VarChar(128)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   funds mutualfund[]
+// }
+
+// // Funds
+// model mutual_funds {
+//   id             Int       @id @default(autoincrement())
+//   code           String    @unique @db.VarChar(64)
+//   name           String
+//   currency       String    @default("IDR") @db.VarChar(8)
+//   isin           String?   @unique @db.VarChar(32)
+//   inceptionDate  DateTime?
+//   riskLevel      RiskLevel
+//   expenseRatio   Decimal?  @db.Decimal(7, 6) // 0-1 range
+//   managementFee  Decimal?  @db.Decimal(7, 6)
+//   minimumInitial Decimal?  @db.Decimal(24, 2)
+//   minimumTopUp   Decimal?  @db.Decimal(24, 2)
+//   enabled        Boolean   @default(true)
+//   createdAt      DateTime  @default(now())
+//   updatedAt      DateTime  @updatedAt
+
+//   // Relations
+//   categoryId Int
+//   category   fund_categories @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+//   assetManagerId Int
+//   assetManager   asset_managers @relation(fields: [assetManagerId], references: [id], onDelete: Restrict)
+
+//   custodianBankId Int?
+//   custodianBank   custodian_banks? @relation(fields: [custodianBankId], references: [id], onDelete: SetNull)
+
+//   navHistory    navhistory[]
+//   stats         fundstats?
+//   holdings      holding[]
+//   watchlistedBy watchlist[]
+
+//   @@index([categoryId])
+//   @@index([assetManagerId])
+// }
+
+// // Daily NAV per unit (price)
+// model navhistory {
+//   id        Int      @id @default(autoincrement())
+//   fundId    Int
+//   date      DateTime
+//   nav       Decimal  @db.Decimal(24, 8) // NAV per unit
+//   aum       Decimal? @db.Decimal(24, 2) // Assets Under Management (optional)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   fund mutual_funds @relation(fields: [fundId], references: [id], onDelete: Cascade)
+
+//   @@unique([fundId, date])
+//   @@index([date])
+// }
+
+// // Cached performance metrics (optional)
+// model fundstats {
+//   id        Int      @id @default(autoincrement())
+//   fundId    Int      @unique
+//   // returns stored as fractions (0.12 = 12%)
+//   return1m  Decimal? @db.Decimal(9, 6)
+//   return3m  Decimal? @db.Decimal(9, 6)
+//   return6m  Decimal? @db.Decimal(9, 6)
+//   return1y  Decimal? @db.Decimal(9, 6)
+//   return3y  Decimal? @db.Decimal(9, 6)
+//   return5y  Decimal? @db.Decimal(9, 6)
+//   returnYTD Decimal? @db.Decimal(9, 6)
+//   stdDev1y  Decimal? @db.Decimal(9, 6)
+//   sharpe1y  Decimal? @db.Decimal(9, 6)
+//   updatedAt DateTime @updatedAt
+//   createdAt DateTime @default(now())
+
+//   fund mutual_funds @relation(fields: [fundId], references: [id], onDelete: Cascade)
+// }
+
+// // User portfolios and holdings
+// model portfolio {
+//   id           Int      @id @default(autoincrement())
+//   userId       Int
+//   name         String   @db.VarChar(128)
+//   baseCurrency String   @default("IDR") @db.VarChar(8)
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+
+//   user         users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   holdings     holding[]
+//   transactions transaction[]
+
+//   @@index([userId])
+// }
+
+// model holding {
+//   id           Int      @id @default(autoincrement())
+//   portfolioId  Int
+//   fundId       Int
+//   units        Decimal  @db.Decimal(24, 8)
+//   averagePrice Decimal  @db.Decimal(24, 8)
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+
+//   portfolio portfolio    @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+//   fund      mutual_funds @relation(fields: [fundId], references: [id], onDelete: Restrict)
+
+//   @@unique([portfolioId, fundId])
+//   @@index([fundId])
+// }
+
+// model transaction {
+//   id          Int               @id @default(autoincrement())
+//   portfolioId Int
+//   fundId      Int
+//   type        TransactionType
+//   status      TransactionStatus @default(PENDING)
+//   tradeDate   DateTime
+//   settleDate  DateTime?
+//   price       Decimal           @db.Decimal(24, 8)
+//   units       Decimal           @db.Decimal(24, 8)
+//   grossAmount Decimal           @db.Decimal(24, 2)
+//   feeAmount   Decimal?          @db.Decimal(24, 2)
+//   taxAmount   Decimal?          @db.Decimal(24, 2)
+//   netAmount   Decimal           @db.Decimal(24, 2)
+//   notes       String?           @db.VarChar(512)
+//   createdAt   DateTime          @default(now())
+//   updatedAt   DateTime          @updatedAt
+
+//   portfolio portfolio    @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+//   fund      mutual_funds @relation(fields: [fundId], references: [id], onDelete: Restrict)
+
+//   @@index([portfolioId])
+//   @@index([fundId])
+//   @@index([tradeDate])
+// }
+
+// // User watchlist of funds
+// model watchlist {
+//   id        Int      @id @default(autoincrement())
+//   userId    Int
+//   fundId    Int
+//   createdAt DateTime @default(now())
+
+//   user users        @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   fund mutual_funds @relation(fields: [fundId], references: [id], onDelete: Cascade)
+
+//   @@unique([userId, fundId])
+//   @@index([fundId])
+// }

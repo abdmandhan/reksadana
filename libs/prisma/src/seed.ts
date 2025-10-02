@@ -13,7 +13,7 @@ const main = async () => {
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
 
-    await prisma.users.upsert({
+    await prisma.user.upsert({
       where: { email: user.email },
       create: {
         name: user.name,
