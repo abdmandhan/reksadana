@@ -25,9 +25,9 @@
   "scripts": {
     "generate": "prisma generate --schema=src/schema.prisma",
     "migrate": "prisma migrate dev --schema=src/schema.prisma",
-    "seed": "node --loader ts-node/esm src/seed.ts"
+    "seed": "npx tsx src/seed.ts"
   },
   "prisma": {
-    "seed": "node --loader ts-node/esm src/seed.ts"
+    "seed": "npx tsx src/seed.ts"
   }
 }

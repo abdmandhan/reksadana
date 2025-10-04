@@ -191,7 +191,7 @@ model banks {
   code         String         @unique
   logo         String?
   is_active    Boolean
-  bi_code      String
+  bi_code      String?
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
   deleted_at   DateTime?
@@ -216,6 +216,76 @@ model holidays {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+}
+
+model fund_types {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  risk_point Int
+  icon       String?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  funds      funds[]
+}
+
+model funds {
+  id             Int     @id @default(autoincrement())
+  name           String
+  ksei_code      String?
+  code           String  @unique
+  color          String?
+  bank_id        Int
+  bank_branch_id Int
+  account_number String
+  account_name   String
+
+  launched_at DateTime
+
+  max_red_percentage    Float
+  max_switch_percentage Float
+  max_unit_issued       Float?
+
+  min_red Float
+
+  can_switch_to      String //all,same_custody,specific_funds
+  can_switch_to_list String @db.Text
+
+  fee_sub   Float
+  fee_red   Float
+  fee_swin  Float
+  fee_swout Float
+
+  is_active Boolean
+  is_public Boolean
+  is_syaria Boolean
+
+  desc     String @db.Text
+  policy   String @db.Text
+  strategy String @db.Text
+  goals    String @db.Text
+
+  can_redeem    Boolean
+  can_subscript Boolean
+  can_switch    Boolean
+  fund_type_id  Int
+
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  deleted_at       DateTime?
+  fund_type        fund_types         @relation(fields: [fund_type_id], references: [id])
+  fund_allocations fund_allocations[]
+}
+
+model fund_allocations {
+  id         Int       @id @default(autoincrement())
+  fund_id    Int
+  allocation Float
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  fund funds @relation(fields: [fund_id], references: [id])
 }
 
 model agents {
@@ -377,4 +447,6 @@ model role_permissions {
 
   permission permissions @relation(fields: [permission_id], references: [id])
   role       roles       @relation(fields: [role_id], references: [id])
+
+  @@unique([permission_id, role_id])
 }
