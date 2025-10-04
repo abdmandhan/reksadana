@@ -124,3 +124,8 @@ The tsx watch method should give you the fastest hot reload experience for your 
 
 
 sudo kill -9 `sudo lsof -t -i:3400`
+
+
+docker build --file apps/api/Dockerfile . -t abdmandhan/freelance:reksadana_api_latest
+docker run -p 3402:3100 abdmandhan/freelance:reksadana_api_latest -e DATABASE_URL=mysql://root:root@192.168.18.223:3306/reksadana
+docker push abdmandhan/freelance:reksadana_api_latest

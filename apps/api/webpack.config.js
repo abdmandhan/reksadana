@@ -2,6 +2,7 @@ const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const { join } = require('path');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+console.log('isDevelopment', isDevelopment);
 
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
@@ -37,9 +38,9 @@ module.exports = {
       assets: ['./src/assets'],
       optimization: false, // Disable optimization for faster builds
       outputHashing: 'none',
-      generatePackageJson: false,
+      generatePackageJson: false, // Don't generate package.json to avoid workspace deps
       sourceMaps: isDevelopment,
-      progress: true,
+      progress: isDevelopment,
       watch: isDevelopment,
       // Enable incremental compilation
       incremental: isDevelopment,
