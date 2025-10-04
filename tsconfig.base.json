@@ -18,7 +18,7 @@
     "target": "es2022",
     "customConditions": ["development"],
     "paths": {
-      "@reksadana/prisma": ["libs/prisma/src/index.ts"]
+      "@reksadana/prisma": ["./libs/prisma/src/index.ts"]
     }
   }
 }
