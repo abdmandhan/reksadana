@@ -75,6 +75,22 @@
           }
         }
       },
+      "dev": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "nodemon",
+          "cwd": "apps/api"
+        }
+      },
+      "dev:fast": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node-dev --respawn --transpile-only --project ./tsconfig.app.json src/main.ts",
+          "cwd": "apps/api"
+        }
+      },
       "test": {
         "options": {
           "passWithNoTests": true
@@ -88,5 +104,10 @@
       }
     }
   },
-  "dependencies": {}
+  "dependencies": {},
+  "scripts": {
+    "dev": "nodemon",
+    "dev:fast": "ts-node-dev --respawn --transpile-only --project ./tsconfig.app.json src/main.ts",
+    "start": "node dist/main.js"
+  }
 }
