@@ -1,4 +1,4 @@
-import prisma from "./index";
+import prisma from "./index.js";
 
 const seedReferences = () => {
   const investorTypes = ['Individual', 'Corporate', 'Selling Agent']

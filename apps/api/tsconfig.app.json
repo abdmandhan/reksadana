@@ -11,10 +11,7 @@
     "incremental": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "assumeChangesOnlyAffectDirectDependencies": true,
-    "paths": {
-      "@/libs/prisma": ["./../../libs/prisma/src"]
-    }
+    "assumeChangesOnlyAffectDirectDependencies": true
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -26,5 +23,10 @@
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../libs/prisma/tsconfig.lib.json"
+    }
   ]
 }

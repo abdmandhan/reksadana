@@ -104,7 +104,9 @@
       }
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "@reksadana/prisma": "*"
+  },
   "scripts": {
     "dev": "nodemon",
     "dev:fast": "ts-node-dev --respawn --transpile-only --project ./tsconfig.app.json src/main.ts",
