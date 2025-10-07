@@ -38,7 +38,7 @@ module.exports = {
       assets: ['./src/assets'],
       optimization: false, // Disable optimization for faster builds
       outputHashing: 'none',
-      generatePackageJson: false, // Don't generate package.json to avoid workspace deps
+      generatePackageJson: !isDevelopment, // Don't generate package.json to avoid workspace deps
       sourceMaps: isDevelopment,
       progress: isDevelopment,
       watch: isDevelopment,

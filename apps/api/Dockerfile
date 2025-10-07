@@ -1,17 +1,13 @@
 FROM node:22-alpine AS builder
-WORKDIR /app
 
-# Copy workspace files
-COPY package.json package-lock.json ./
-COPY libs/prisma/package.json libs/prisma/
+WORKDIR /app
+COPY apps/api/dist/package.json apps/api/dist/package-lock.json ./
 
 # Install only Prisma dependencies
 RUN npm ci --only=production
 
-# Copy Prisma source and generate client
-COPY libs/prisma/src libs/prisma/src
-WORKDIR /app/libs/prisma
-RUN npm run generate
+RUN npm cache clean --force
+RUN rm -rf /tmp/*
 
 FROM node:22-alpine AS runner
 WORKDIR /app
