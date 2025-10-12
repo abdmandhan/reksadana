@@ -296,6 +296,18 @@ CREATE TABLE `fund_types` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `corporate_legals` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `corporate_legals_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `funds` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -381,12 +393,30 @@ CREATE TABLE `investors` (
     `risk_level_id` INTEGER NULL,
     `risk_point` INTEGER NULL,
     `sid` VARCHAR(191) NULL,
-    `birth_date` DATETIME(3) NOT NULL,
-    `birth_place` VARCHAR(191) NOT NULL,
     `investor_status_id` INTEGER NOT NULL,
-    `is_employee` BOOLEAN NOT NULL,
     `agent_id` INTEGER NOT NULL,
     `investor_type_id` INTEGER NOT NULL,
+    `version` INTEGER NOT NULL DEFAULT 1,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `created_by` INTEGER NOT NULL,
+    `updated_at` DATETIME(3) NOT NULL,
+    `updated_by` INTEGER NULL,
+    `deleted_at` DATETIME(3) NULL,
+    `deleted_by` INTEGER NULL,
+
+    UNIQUE INDEX `investors_email_key`(`email`),
+    UNIQUE INDEX `investors_sid_key`(`sid`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `investor_individuals` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `birth_date` DATETIME(3) NOT NULL,
+    `birth_place` VARCHAR(191) NOT NULL,
+    `mother_name` VARCHAR(191) NOT NULL,
+    `is_employee` BOOLEAN NOT NULL,
     `tax_number` VARCHAR(191) NOT NULL,
     `tax_effective_date` DATETIME(3) NOT NULL,
     `gender_id` INTEGER NOT NULL,
@@ -404,8 +434,29 @@ CREATE TABLE `investors` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `investors_email_key`(`email`),
-    UNIQUE INDEX `investors_sid_key`(`sid`),
+    UNIQUE INDEX `investor_individuals_investor_id_key`(`investor_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `investor_corporates` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `tax_number` VARCHAR(191) NOT NULL,
+    `reg_date` DATETIME(3) NOT NULL,
+    `siup` VARCHAR(191) NOT NULL,
+    `tdp_number` VARCHAR(191) NOT NULL,
+    `tdp_reg_date` DATETIME(3) NOT NULL,
+    `skd_reg_date` DATETIME(3) NOT NULL,
+    `establish_date` DATETIME(3) NOT NULL,
+    `phone_number` VARCHAR(191) NOT NULL,
+    `fax_number` VARCHAR(191) NOT NULL,
+    `corporate_legal_id` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `investor_corporates_investor_id_key`(`investor_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -505,6 +556,30 @@ CREATE TABLE `role_permissions` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `journals` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `entity` VARCHAR(191) NOT NULL,
+    `entity_id` VARCHAR(191) NOT NULL,
+    `action` ENUM('CREATE', 'UPDATE', 'DELETE', 'RESTORE') NOT NULL,
+    `status` ENUM('PENDING', 'APPROVED', 'REJECTED', 'CANCELLED') NOT NULL,
+    `requested_by` INTEGER NOT NULL,
+    `requested_at` DATETIME(3) NOT NULL,
+    `reason` TEXT NOT NULL,
+    `before_data` TEXT NOT NULL,
+    `after_data` TEXT NOT NULL,
+    `approved_by` INTEGER NOT NULL,
+    `approved_at` DATETIME(3) NOT NULL,
+    `rejection_reason` TEXT NOT NULL,
+    `applied_at` DATETIME(3) NOT NULL,
+    `entity_version` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `bank_branchs` ADD CONSTRAINT `bank_branchs_bank_id_fkey` FOREIGN KEY (`bank_id`) REFERENCES `banks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -527,43 +602,52 @@ ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_parent_id_fkey` FOREIGN KEY (`
 ALTER TABLE `investors` ADD CONSTRAINT `investors_agent_id_fkey` FOREIGN KEY (`agent_id`) REFERENCES `agents`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_income_id_fkey` FOREIGN KEY (`income_id`) REFERENCES `incomes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_income_source_id_fkey` FOREIGN KEY (`income_source_id`) REFERENCES `income_sources`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_marital_id_fkey` FOREIGN KEY (`marital_id`) REFERENCES `maritals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_nationality_id_fkey` FOREIGN KEY (`nationality_id`) REFERENCES `nationalities`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_job_id_fkey` FOREIGN KEY (`job_id`) REFERENCES `jobs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_job_category_id_fkey` FOREIGN KEY (`job_category_id`) REFERENCES `job_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_job_role_id_fkey` FOREIGN KEY (`job_role_id`) REFERENCES `job_roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `investors` ADD CONSTRAINT `investors_investor_type_id_fkey` FOREIGN KEY (`investor_type_id`) REFERENCES `investor_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investors` ADD CONSTRAINT `investors_investor_status_id_fkey` FOREIGN KEY (`investor_status_id`) REFERENCES `investor_statuses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_gender_id_fkey` FOREIGN KEY (`gender_id`) REFERENCES `genders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_education_id_fkey` FOREIGN KEY (`education_id`) REFERENCES `educations`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_card_type_id_fkey` FOREIGN KEY (`card_type_id`) REFERENCES `card_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `investors` ADD CONSTRAINT `investors_risk_level_id_fkey` FOREIGN KEY (`risk_level_id`) REFERENCES `risk_levels`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_income_id_fkey` FOREIGN KEY (`income_id`) REFERENCES `incomes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_income_source_id_fkey` FOREIGN KEY (`income_source_id`) REFERENCES `income_sources`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_marital_id_fkey` FOREIGN KEY (`marital_id`) REFERENCES `maritals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_nationality_id_fkey` FOREIGN KEY (`nationality_id`) REFERENCES `nationalities`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_id_fkey` FOREIGN KEY (`job_id`) REFERENCES `jobs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_category_id_fkey` FOREIGN KEY (`job_category_id`) REFERENCES `job_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_role_id_fkey` FOREIGN KEY (`job_role_id`) REFERENCES `job_roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_gender_id_fkey` FOREIGN KEY (`gender_id`) REFERENCES `genders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_education_id_fkey` FOREIGN KEY (`education_id`) REFERENCES `educations`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_card_type_id_fkey` FOREIGN KEY (`card_type_id`) REFERENCES `card_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_corporates` ADD CONSTRAINT `investor_corporates_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_corporates` ADD CONSTRAINT `investor_corporates_corporate_legal_id_fkey` FOREIGN KEY (`corporate_legal_id`) REFERENCES `corporate_legals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investor_heirs` ADD CONSTRAINT `investor_heirs_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -588,3 +672,9 @@ ALTER TABLE `role_permissions` ADD CONSTRAINT `role_permissions_permission_id_fk
 
 -- AddForeignKey
 ALTER TABLE `role_permissions` ADD CONSTRAINT `role_permissions_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `journals` ADD CONSTRAINT `journals_requested_by_fkey` FOREIGN KEY (`requested_by`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `journals` ADD CONSTRAINT `journals_approved_by_fkey` FOREIGN KEY (`approved_by`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -21,6 +21,7 @@ const seedReferences = () => {
   const jobRoles = ['Komisaris,Direksi,C Level', 'Kepala Divisi,VP,AVP', 'Manajer,Kabag', 'Leader,Kepala Unit', 'Officer,Staff', 'Other']
   const agentTypes = ['Retail', 'Corporate', 'Selling Agent', 'Online']
   const agentLevels = ['Head', 'Sales', 'Sub Sales']
+  const corporateLegals = ['Koperasi', 'Perseroan Terbatas (PT)', 'Persekutuan Komanditer (CV)', 'Persekutuan Firma (Firma)', 'Perusahaan Perorangan', 'Yayasan']
 
   const banks = [
     {
@@ -275,6 +276,13 @@ const seedReferences = () => {
         where: { name: fundType.name },
         create: { name: fundType.name, risk_point: fundType.riskPoint },
         update: { name: fundType.name, risk_point: fundType.riskPoint },
+      })
+    }),
+    corporateLegals.map(async (corporateLegal) => {
+      await prisma.corporate_legals.upsert({
+        where: { name: corporateLegal },
+        create: { name: corporateLegal },
+        update: { name: corporateLegal },
       })
     }),
     Object.values(permissions).map(async (permission) => {

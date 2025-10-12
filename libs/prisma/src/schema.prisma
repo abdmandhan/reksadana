@@ -7,6 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// enums
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum ActionType {
+  CREATE
+  UPDATE
+  DELETE
+  RESTORE
+}
+
 // references tables
 model investor_types {
   id         Int         @id @default(autoincrement())
@@ -27,12 +42,12 @@ model investor_statuses {
 }
 
 model genders {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model relationships {
@@ -87,84 +102,84 @@ model transaction_statuses {
 }
 
 model educations {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model card_types {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model incomes {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model income_sources {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model maritals {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model nationalities {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model jobs {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model job_categories {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model job_roles {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  investor_individuals investor_individuals[]
 }
 
 model agent_types {
@@ -227,6 +242,15 @@ model fund_types {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
   funds      funds[]
+}
+
+model corporate_legals {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @unique
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
+  deleted_at          DateTime?
+  investor_corporates investor_corporates[]
 }
 
 model funds {
@@ -312,22 +336,46 @@ model agents {
 }
 
 model investors {
-  id                 String   @id @default(uuid())
-  first_name         String   @db.VarChar(128)
-  middle_name        String?  @db.VarChar(128)
-  last_name          String   @db.VarChar(128)
-  email              String   @unique
-  phone_number       String?  @db.VarChar(32)
-  risk_level_id      Int?
-  risk_point         Int?
-  sid                String?  @unique
-  birth_date         DateTime
-  birth_place        String
+  id            String  @id @default(uuid())
+  first_name    String  @db.VarChar(128)
+  middle_name   String? @db.VarChar(128)
+  last_name     String  @db.VarChar(128)
+  email         String  @unique
+  phone_number  String? @db.VarChar(32)
+  risk_level_id Int?
+  risk_point    Int?
+  sid           String? @unique
+
   investor_status_id Int
-  is_employee        Boolean
   agent_id           Int
   investor_type_id   Int
 
+  version Int @default(1) //bump on each approved change
+
+  created_at         DateTime             @default(now())
+  created_by         Int
+  updated_at         DateTime             @updatedAt
+  updated_by         Int?
+  deleted_at         DateTime?
+  deleted_by         Int?
+  investor_addresses investor_addresses[]
+  investor_heirs     investor_heirs[]
+  sales              agents               @relation(fields: [agent_id], references: [id])
+  investor_type      investor_types       @relation(fields: [investor_type_id], references: [id])
+  investor_status    investor_statuses    @relation(fields: [investor_status_id], references: [id])
+
+  risk_level           risk_levels?          @relation(fields: [risk_level_id], references: [id])
+  investor_individuals investor_individuals?
+  investor_corporates  investor_corporates?
+}
+
+model investor_individuals {
+  id                 Int       @id @default(autoincrement())
+  investor_id        String    @unique
+  birth_date         DateTime
+  birth_place        String
+  mother_name        String
+  is_employee        Boolean
   tax_number         String
   tax_effective_date DateTime
   gender_id          Int
@@ -341,26 +389,42 @@ model investors {
   job_id             Int
   job_category_id    Int
   job_role_id        Int
-
-  created_at         DateTime             @default(now())
-  updated_at         DateTime             @updatedAt
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
   deleted_at         DateTime?
-  investor_addresses investor_addresses[]
-  investor_heirs     investor_heirs[]
-  sales              agents               @relation(fields: [agent_id], references: [id])
-  income             incomes              @relation(fields: [income_id], references: [id])
-  income_source      income_sources       @relation(fields: [income_source_id], references: [id])
-  marital            maritals             @relation(fields: [marital_id], references: [id])
-  nationality        nationalities        @relation(fields: [nationality_id], references: [id])
-  job                jobs                 @relation(fields: [job_id], references: [id])
-  job_category       job_categories       @relation(fields: [job_category_id], references: [id])
-  job_role           job_roles            @relation(fields: [job_role_id], references: [id])
-  investor_type      investor_types       @relation(fields: [investor_type_id], references: [id])
-  investor_status    investor_statuses    @relation(fields: [investor_status_id], references: [id])
-  gender             genders              @relation(fields: [gender_id], references: [id])
-  education          educations           @relation(fields: [education_id], references: [id])
-  card_type          card_types           @relation(fields: [card_type_id], references: [id])
-  risk_level         risk_levels?         @relation(fields: [risk_level_id], references: [id])
+
+  investor      investors      @relation(fields: [investor_id], references: [id])
+  income        incomes        @relation(fields: [income_id], references: [id])
+  income_source income_sources @relation(fields: [income_source_id], references: [id])
+  marital       maritals       @relation(fields: [marital_id], references: [id])
+  nationality   nationalities  @relation(fields: [nationality_id], references: [id])
+  job           jobs           @relation(fields: [job_id], references: [id])
+  job_category  job_categories @relation(fields: [job_category_id], references: [id])
+  job_role      job_roles      @relation(fields: [job_role_id], references: [id])
+  gender        genders        @relation(fields: [gender_id], references: [id])
+  education     educations     @relation(fields: [education_id], references: [id])
+  card_type     card_types     @relation(fields: [card_type_id], references: [id])
+}
+
+model investor_corporates {
+  id                 Int       @id @default(autoincrement())
+  investor_id        String    @unique
+  tax_number         String
+  reg_date           DateTime
+  siup               String
+  tdp_number         String
+  tdp_reg_date       DateTime
+  skd_reg_date       DateTime
+  establish_date     DateTime
+  phone_number       String
+  fax_number         String
+  corporate_legal_id Int
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+  deleted_at         DateTime?
+
+  investor        investors        @relation(fields: [investor_id], references: [id])
+  corporate_legal corporate_legals @relation(fields: [corporate_legal_id], references: [id])
 }
 
 model investor_heirs {
@@ -396,14 +460,16 @@ model investor_addresses {
 }
 
 model users {
-  id         Int          @id @default(autoincrement())
-  name       String       @db.VarChar(128)
-  username   String       @unique
-  password   String       @db.VarChar(128)
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt
-  deleted_at DateTime?
-  user_roles user_roles[]
+  id                 Int          @id @default(autoincrement())
+  name               String       @db.VarChar(128)
+  username           String       @unique
+  password           String       @db.VarChar(128)
+  created_at         DateTime     @default(now())
+  updated_at         DateTime     @updatedAt
+  deleted_at         DateTime?
+  user_roles         user_roles[]
+  journals_requested journals[]   @relation("journals_requested")
+  journals_approved  journals[]   @relation("journals_approved")
 }
 
 model user_roles {
@@ -449,4 +515,32 @@ model role_permissions {
   role       roles       @relation(fields: [role_id], references: [id])
 
   @@unique([permission_id, role_id])
+}
+
+model journals {
+  id           Int            @id @default(autoincrement())
+  entity       String
+  entity_id    String
+  action       ActionType
+  status       ApprovalStatus
+  requested_by Int
+  requested_at DateTime
+  reason       String         @db.Text
+  before_data  String         @db.Text
+  after_data   String         @db.Text
+
+  approved_by      Int
+  approved_at      DateTime
+  rejection_reason String   @db.Text
+
+  applied_at DateTime
+
+  entity_version Int
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  requested_user users @relation("journals_requested", fields: [requested_by], references: [id])
+  approved_user  users @relation("journals_approved", fields: [approved_by], references: [id])
 }
