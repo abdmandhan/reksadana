@@ -1,69 +1,13 @@
 import prisma from './index.js';
 import seedReferences from './seeds/references.js';
-import bcrypt from 'bcryptjs';
+import seedUsers from './seeds/users.js';
+import seedAgents from './seeds/agents.js';
+import seedInvestors from './seeds/investors.js';
 import { faker } from '@faker-js/faker';
 
 const main = async () => {
   await seedReferences();
-  // seed users
-
-  const users = [
-    {
-      name: 'Admin',
-      username: 'admin',
-      password: '12341234',
-      roles: ['Admin'],
-    },
-    {
-      name: 'Maker 1',
-      username: 'maker1',
-      password: '12341234',
-      roles: ['Maker'],
-    },
-    {
-      name: 'Approver 1',
-      username: 'approver1',
-      password: '12341234',
-      roles: ['Approver'],
-    },
-  ];
-
-  await Promise.all(
-    users.map(async (user) => {
-      const _user = await prisma.users.upsert({
-        where: { username: user.username },
-        create: {
-          name: user.name,
-          username: user.username,
-          password: bcrypt.hashSync(user.password, 10),
-        },
-        update: {
-          name: user.name,
-          username: user.username,
-          password: bcrypt.hashSync(user.password, 10),
-        },
-      });
-
-      for (const role of user.roles) {
-        const _role = await prisma.roles.findFirst({ where: { name: role } });
-        if (_role) {
-          await prisma.user_roles.upsert({
-            where: {
-              user_id_role_id: { user_id: _user.id, role_id: _role.id },
-            },
-            create: {
-              user_id: _user.id,
-              role_id: _role.id,
-            },
-            update: {
-              user_id: _user.id,
-              role_id: _role.id,
-            },
-          });
-        }
-      }
-    })
-  );
+  await seedUsers();
 
   const maker = await prisma.users.findFirst({ where: { username: 'maker1' } });
   const approver = await prisma.users.findFirst({
@@ -72,187 +16,111 @@ const main = async () => {
 
   if (!maker || !approver) return;
 
-  const agentLevels = await prisma.agent_levels.findMany();
-  const agentTypes = await prisma.agent_types.findMany();
+  await seedAgents();
+  await seedInvestors();
 
-  const agentRetail = agentTypes.find((a) => a.name == 'Retail');
+  // seed funds
+  const moneyMarketFundType = await prisma.fund_types.findFirst({
+    where: { name: 'Money Market' },
+  });
+  if (!moneyMarketFundType) return;
 
-  if (!agentRetail) return;
+  const bank = await prisma.banks.findFirst({
+    include: { bank_branchs: true },
+  });
 
-  // seed agents (retail)
-  const agents = [
-    {
-      agent_level_id: agentLevels.find((a) => a.name == 'Head')?.id,
-      agent_type_id: agentRetail.id,
-      code: 'HEAD01',
-      first_name: faker.person.firstName(),
-      middle_name: faker.person.middleName(),
-      last_name: faker.person.lastName(),
-      email: 'head_agent@gmail.com',
-      phone_number: faker.phone.number(),
-      is_active: true,
-      childrens: [
-        {
-          agent_level_id: agentLevels.find((a) => a.name == 'Sales')?.id,
-          agent_type_id: agentRetail.id,
-          code: 'SALES01',
-          first_name: faker.person.firstName(),
-          middle_name: faker.person.middleName(),
-          last_name: faker.person.lastName(),
-          email: 'sales_agent@gmail.com',
-          phone_number: faker.phone.number(),
-          is_active: true,
-          childrens: [
-            {
-              agent_level_id: agentLevels.find((a) => a.name == 'Sub Sales')
-                ?.id,
-              agent_type_id: agentRetail.id,
-              code: 'SUBSALES01',
-              first_name: faker.person.firstName(),
-              middle_name: faker.person.middleName(),
-              last_name: faker.person.lastName(),
-              email: 'sub_sales_agent@gmail.com',
-              phone_number: faker.phone.number(),
-              is_active: true,
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  if (!bank || bank.bank_branchs.length == 0) return;
 
-  const upsertAgent = async (agent: any, agent_parent_id?: number) => {
-    const _agent = await prisma.agents.upsert({
-      where: { code: agent.code },
+  const upsertFunds = async (name: string, code: string) => {
+    const maxUnitIssued = [0, 1000, 10000, 100000, 1000000, 10000000];
+    const minRed = [10_000, 20_000, 50_000, 100_000];
+    const _fund = await prisma.funds.upsert({
+      where: { code },
       create: {
-        agent_level_id: agent.agent_level_id!,
-        agent_type_id: agent.agent_type_id,
-        agent_parent_id,
-        code: agent.code,
-        first_name: agent.first_name,
-        middle_name: agent.middle_name,
-        last_name: agent.last_name,
-        email: agent.email,
-        phone_number: agent.phone_number,
-        is_active: agent.is_active,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      update: {
-        agent_level_id: agent.agent_level_id,
-        agent_type_id: agent.agent_type_id,
-        code: agent.code,
-        first_name: agent.first_name,
-        middle_name: agent.middle_name,
-        last_name: agent.last_name,
-        email: agent.email,
-        phone_number: agent.phone_number,
-        is_active: agent.is_active,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    });
+        name,
+        code,
+        ksei_code: code,
+        fund_type_id: moneyMarketFundType.id,
+        bank_id: bank.id,
+        bank_branch_id: bank.bank_branchs[0].id,
+        account_number: faker.number
+          .int({ min: 1000000000, max: 9999999999 })
+          .toString(),
+        account_name: `Reksadana ${name}`,
+        launched_at: faker.date.past(),
+        max_red_percentage: faker.number.int({ min: 90, max: 100 }),
+        max_switch_percentage: faker.number.int({ min: 90, max: 100 }),
+        max_unit_issued:
+          maxUnitIssued[
+            faker.number.int({ min: 0, max: maxUnitIssued.length - 1 })
+          ], // maximal unit yang bisa dibeli -> 0 -> unlimited
+        min_red: minRed[faker.number.int({ min: 0, max: minRed.length - 1 })], // in rupiah
+        can_switch_to: 'all',
+        can_switch_to_list: [],
+        fee_sub: 0.0,
+        fee_red: 0.0,
+        fee_swin: 0.0,
+        fee_swout: 0.0,
+        is_active: true,
+        is_public: true,
+        is_syaria: false,
+        desc: faker.lorem.paragraph(),
+        policy: faker.lorem.paragraph(),
+        strategy: faker.lorem.paragraph(),
+        goals: faker.lorem.paragraph(),
+        can_redeem: true,
+        can_subscript: true,
+        can_switch: true,
 
-    if (agent.childrens) {
-      for (let i = 0; i < agent.childrens.length; i++) {
-        const child = agent.childrens[i];
-        await upsertAgent(child, _agent.id);
-      }
-    }
-  }
-
-  for (let i = 0; i < agents.length; i++) {
-    const agent = agents[i];
-    await upsertAgent(agent)
-  }
-
-  const __agents = await prisma.agents.findMany();
-  const individualInvestorType = await prisma.investor_types.findFirst({ where: { name: 'Individual' } })
-  if (!individualInvestorType) return;
-
-  //seed investors (retail)
-  const upsertInvestorIndividual = async (email: string) => {
-    const _investor = await prisma.investors.upsert({
-      where: { email },
-      create: {
-        email,
-        first_name: faker.person.firstName(),
-        middle_name: faker.person.middleName(),
-        last_name: faker.person.lastName(),
-        phone_number: faker.phone.number(),
-        risk_level_id: 1,
-        risk_point: faker.number.int({ min: 1, max: 100 }),
-        sid: faker.string.uuid(),
-        // random agent from __agents
-        agent_id: __agents[faker.number.int({ min: 0, max: __agents.length - 1 })].id,
-        investor_type_id: individualInvestorType.id,
         version: 1,
       },
-      update: {}
+      update: {},
     });
+  };
 
-    // heirs
-    const investorHeirs = await prisma.investor_heirs.findMany({ where: { investor_id: _investor.id } })
-    if (investorHeirs.length == 0) {
-      await prisma.investor_heirs.createMany({
-        data: [
-          { investor_id: _investor.id, name: faker.person.firstName(), relation_id: faker.number.int({ min: 1, max: 7 }), },
-          { investor_id: _investor.id, name: faker.person.firstName(), relation_id: faker.number.int({ min: 1, max: 7 }), },
-        ],
-      });
-    }
+  const funds = [
+    {
+      name: 'Money Market 01',
+      code: 'MM01',
+      ksei_code: 'MM01',
+      fund_type_id: moneyMarketFundType.id,
+      bank_id: bank.id,
+      bank_branch_id: bank.bank_branchs[0].id,
+      // random number
+      account_number: faker.number
+        .int({ min: 1000000000, max: 9999999999 })
+        .toString(),
+      account_name: 'Reksadana Money Market 01',
+      launched_at: faker.date.past(),
+      max_red_percentage: 100,
+      max_switch_percentage: 100,
+      max_unit_issued: 1000, // TODO: what's the effects?
 
-    // addresses
-    const investorAddresses = await prisma.investor_addresses.findMany({ where: { investor_id: _investor.id } })
-    if (investorAddresses.length == 0) {
-      await prisma.investor_addresses.create({
-        data: {
-          investor_id: _investor.id,
-          address_type_id: faker.number.int({ min: 1, max: 3 }),
-          province_id: "1",
-          city_id: "1",
-          district_id: "1",
-          subdistrict_id: "1",
-          postal_code: "qasd",
-          address: faker.location.streetAddress(),
-          address_line_2: faker.location.secondaryAddress(),
-        }
-      })
-    }
+      min_red: 0,
 
-    // individual
-    const investorIndividual = await prisma.investor_individuals.findFirst({ where: { investor_id: _investor.id } })
+      can_switch_to: 'all',
+      can_switch_to_list: [],
 
-    if (!investorIndividual) {
-      await prisma.investor_individuals.create({
-        data: {
-          investor_id: _investor.id,
-          birth_date: faker.date.birthdate(),
-          birth_place: faker.location.city(),
-          mother_name: faker.person.fullName(),
-          is_employee: faker.datatype.boolean(),
-          tax_number: faker.string.uuid(),
-          tax_effective_date: faker.date.past(),
-          gender_id: faker.number.int({ min: 1, max: 2 }),
-          education_id: faker.number.int({ min: 1, max: 8 }),
-          card_type_id: faker.number.int({ min: 1, max: 2 }),
-          card_number: faker.string.uuid(),
-          income_id: faker.number.int({ min: 1, max: 6 }),
-          income_source_id: faker.number.int({ min: 1, max: 10 }),
-          marital_id: faker.number.int({ min: 1, max: 4 }),
-          nationality_id: faker.number.int({ min: 1, max: 4 }),
-          job_id: faker.number.int({ min: 1, max: 9 }),
-          job_category_id: faker.number.int({ min: 1, max: 7 }),
-          job_role_id: faker.number.int({ min: 1, max: 6 }),
-        }
-      })
-    }
-  }
-  const investors = ['investor_01@gmail.com', 'investor_02@gmail.com', 'investor_03@gmail.com']
-  for (let i = 0; i < investors.length; i++) {
-    const investor = investors[i];
-    await upsertInvestorIndividual(investor)
-  }
+      fee_sub: 0.0,
+      fee_red: 0.0,
+      fee_swin: 0.0,
+      fee_swout: 0.0,
+
+      is_active: true,
+      is_public: true,
+      is_syaria: false,
+
+      desc: faker.lorem.paragraph(),
+      policy: faker.lorem.paragraph(),
+      strategy: faker.lorem.paragraph(),
+      goals: faker.lorem.paragraph(),
+
+      can_redeem: true,
+      can_subscript: true,
+      can_switch: true,
+      allocations: [{}],
+    },
+  ];
 };
 
 main()

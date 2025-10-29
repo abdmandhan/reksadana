@@ -22,6 +22,12 @@ enum ActionType {
   RESTORE
 }
 
+// jenis minimal sisa Penjualan
+enum MinRestType {
+  UNIT
+  AMOUNT
+}
+
 // references tables
 model investor_types {
   id         Int         @id @default(autoincrement())
@@ -254,6 +260,25 @@ model corporate_legals {
   investor_corporates investor_corporates[]
 }
 
+model fund_asset_types {
+  id               Int                @id @default(autoincrement())
+  name             String
+  code             String             @unique
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  deleted_at       DateTime?
+  fund_allocations fund_allocations[]
+}
+
+model fund_document_types {
+  id             Int              @id @default(autoincrement())
+  name           String
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  deleted_at     DateTime?
+  fund_documents fund_documents[]
+}
+
 // end of references table
 
 model funds {
@@ -262,6 +287,7 @@ model funds {
   ksei_code      String?
   code           String  @unique
   color          String?
+  fund_type_id   Int
   bank_id        Int
   bank_branch_id Int
   account_number String
@@ -271,17 +297,51 @@ model funds {
 
   max_red_percentage    Float
   max_switch_percentage Float
-  max_unit_issued       Float?
+  max_unit_issued       Float // maximal unit investor can buy
 
-  min_red Float
+  min_red   Float //minimal redemption amount
+  min_sub   Float //minimal subscription amount
+  min_swin  Float //minimal switch in amount
+  min_swout Float //minimal switch out amount
 
-  can_switch_to      String //all,same_custody,specific_funds
-  can_switch_to_list String @db.Text
+  recommend_sub    Json? //[10_000,20_000,50_000,100_000]
+  recommend_red    Json? //[10_000,20_000,50_000,100_000]
+  recommend_switch Json? //[10_000,20_000,50_000,100_000]
 
-  fee_sub   Float
-  fee_red   Float
-  fee_swin  Float
-  fee_swout Float
+  sub_settlement_days       Int @default(0) // 0 -> immediate
+  red_settlement_days       Int @default(0) // 0 -> immediate
+  switching_settlement_days Int @default(0) // 0 -> immediate
+
+  min_rest_red           MinRestType @default(AMOUNT) // default -> amount
+  min_rest_red_amount    Float // minimal rest amount for redemption
+  min_rest_switch        MinRestType @default(AMOUNT) // default -> amount
+  min_rest_switch_amount Float // minimal rest amount for switch
+
+  nab            Float
+  nav_per_unit   Float
+  nav_updated_at DateTime? // last updated NAV
+
+  initial_nav  Float
+  initial_unit Float
+
+  max_investors   Int   @default(0) // 0 -> unlimited
+  max_hold        Int   @default(0) // 0 -> unlimited -> max units investor can hold
+  max_hold_amount Float @default(0) // 0 -> unlimited -> max amount investor can hold (in rupiah/usd)
+
+  unit_precision Int @default(2) // how many decimal places for unit -> default -> 0.01
+
+  start_date DateTime
+  // optional: for fund that has a limited period
+  end_date   DateTime?
+
+  //all,same_custody,specific_funds
+  can_switch_to      String @default("all")
+  can_switch_to_list Json?
+
+  fee_sub   Float // fee for subscription amount (in rupiah/usd)
+  fee_red   Float // fee for redemption amount (in rupiah/usd)
+  fee_swin  Float // fee for switch in amount (in rupiah/usd)
+  fee_swout Float // fee for switch out amount (in rupiah/usd)
 
   is_active Boolean
   is_public Boolean
@@ -295,7 +355,6 @@ model funds {
   can_redeem    Boolean
   can_subscript Boolean
   can_switch    Boolean
-  fund_type_id  Int
 
   created_at       DateTime           @default(now())
   updated_at       DateTime           @updatedAt
@@ -303,17 +362,34 @@ model funds {
   version          Int                @default(1) //bump on each approved change
   fund_type        fund_types         @relation(fields: [fund_type_id], references: [id])
   fund_allocations fund_allocations[]
+  fund_documents   fund_documents[]
 }
 
 model fund_allocations {
-  id         Int       @id @default(autoincrement())
-  fund_id    Int
-  allocation Float
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  id                 Int       @id @default(autoincrement())
+  fund_id            Int
+  fund_asset_type_id Int
+  allocation         Float
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+  deleted_at         DateTime?
 
-  fund funds @relation(fields: [fund_id], references: [id])
+  fund            funds            @relation(fields: [fund_id], references: [id])
+  fund_asset_type fund_asset_types @relation(fields: [fund_asset_type_id], references: [id])
+}
+
+model fund_documents {
+  id                    Int       @id @default(autoincrement())
+  fund_id               Int
+  fund_document_type_id Int
+  url                   String
+  date                  DateTime?
+  created_at            DateTime  @default(now())
+  updated_at            DateTime  @updatedAt
+  deleted_at            DateTime?
+
+  fund               funds               @relation(fields: [fund_id], references: [id])
+  fund_document_type fund_document_types @relation(fields: [fund_document_type_id], references: [id])
 }
 
 model agents {

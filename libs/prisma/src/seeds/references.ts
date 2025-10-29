@@ -1,7 +1,33 @@
 import prisma from '../index.js';
 
-export default () => {
+export default async () => {
   const investorTypes = ['Individual', 'Corporate', 'Selling Agent'];
+  const fundAssetTypes = [
+    {
+      name: 'Corporate Bonds',
+      code: 'CB',
+    },
+    {
+      name: 'Equity',
+      code: 'EQ',
+    },
+    {
+      name: 'Government Bonds',
+      code: 'GB',
+    },
+    {
+      name: 'Time Deposit',
+      code: 'TD',
+    },
+    {
+      name: 'Money Market',
+      code: 'MM',
+    },
+    {
+      name: 'CASH',
+      code: 'CASH',
+    },
+  ];
   // const investorStatuses = ['Entried', 'Approved', 'Rejected'];
   const genders = ['Male', 'Female'];
   const relationships = [
@@ -323,6 +349,13 @@ export default () => {
         where: { name: investorType },
         create: { name: investorType },
         update: { name: investorType },
+      });
+    }),
+    fundAssetTypes.map(async (fundAssetType) => {
+      await prisma.fund_asset_types.upsert({
+        where: { code: fundAssetType.code },
+        create: { name: fundAssetType.name, code: fundAssetType.code },
+        update: { name: fundAssetType.name, code: fundAssetType.code },
       });
     }),
     // investorStatuses.map(async (investorStatus) => {
