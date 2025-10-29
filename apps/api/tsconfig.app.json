@@ -11,7 +11,8 @@
     "incremental": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "assumeChangesOnlyAffectDirectDependencies": true
+    "assumeChangesOnlyAffectDirectDependencies": true,
+    "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
   "exclude": [

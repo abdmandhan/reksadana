@@ -32,14 +32,14 @@ model investor_types {
   investors  investors[]
 }
 
-model investor_statuses {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  investors  investors[]
-}
+// model investor_statuses {
+//   id         Int         @id @default(autoincrement())
+//   name       String      @unique
+//   created_at DateTime    @default(now())
+//   updated_at DateTime    @updatedAt
+//   deleted_at DateTime?
+//   investors  investors[]
+// }
 
 model genders {
   id                   Int                    @id @default(autoincrement())
@@ -194,6 +194,7 @@ model agent_types {
 model agent_levels {
   id         Int       @id @default(autoincrement())
   name       String    @unique
+  fee        Float
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
@@ -253,6 +254,8 @@ model corporate_legals {
   investor_corporates investor_corporates[]
 }
 
+// end of references table
+
 model funds {
   id             Int     @id @default(autoincrement())
   name           String
@@ -297,6 +300,7 @@ model funds {
   created_at       DateTime           @default(now())
   updated_at       DateTime           @updatedAt
   deleted_at       DateTime?
+  version          Int                @default(1) //bump on each approved change
   fund_type        fund_types         @relation(fields: [fund_type_id], references: [id])
   fund_allocations fund_allocations[]
 }
@@ -327,6 +331,7 @@ model agents {
   created_at      DateTime    @default(now())
   updated_at      DateTime    @updatedAt
   deleted_at      DateTime?
+  version         Int         @default(1)
   investors       investors[]
 
   agent_level  agent_levels @relation(fields: [agent_level_id], references: [id])
@@ -346,23 +351,20 @@ model investors {
   risk_point    Int?
   sid           String? @unique
 
-  investor_status_id Int
-  agent_id           Int
-  investor_type_id   Int
+  // investor_status_id Int
+  agent_id         Int
+  investor_type_id Int
 
-  version Int @default(1) //bump on each approved change
+  version Int @default(1)
 
   created_at         DateTime             @default(now())
-  created_by         Int
   updated_at         DateTime             @updatedAt
-  updated_by         Int?
   deleted_at         DateTime?
-  deleted_by         Int?
   investor_addresses investor_addresses[]
   investor_heirs     investor_heirs[]
   sales              agents               @relation(fields: [agent_id], references: [id])
   investor_type      investor_types       @relation(fields: [investor_type_id], references: [id])
-  investor_status    investor_statuses    @relation(fields: [investor_status_id], references: [id])
+  // investor_status    investor_statuses    @relation(fields: [investor_status_id], references: [id])
 
   risk_level           risk_levels?          @relation(fields: [risk_level_id], references: [id])
   investor_individuals investor_individuals?
@@ -429,7 +431,7 @@ model investor_corporates {
 
 model investor_heirs {
   id          Int       @id @default(autoincrement())
-  investor_id String    @unique
+  investor_id String
   name        String
   relation_id Int
   created_at  DateTime  @default(now())
@@ -482,6 +484,8 @@ model user_roles {
 
   user users @relation(fields: [user_id], references: [id])
   role roles @relation(fields: [role_id], references: [id])
+
+  @@unique([user_id, role_id])
 }
 
 model roles {
@@ -520,27 +524,26 @@ model role_permissions {
 model journals {
   id           Int            @id @default(autoincrement())
   entity       String
-  entity_id    String
+  entity_id    String?
   action       ActionType
   status       ApprovalStatus
   requested_by Int
   requested_at DateTime
-  reason       String         @db.Text
-  before_data  String         @db.Text
-  after_data   String         @db.Text
+  reason       String?        @db.Text
+  before_data  String?        @db.Text
+  after_data   String?        @db.Text
 
-  approved_by      Int
-  approved_at      DateTime
-  rejection_reason String   @db.Text
+  approved_by      Int?
+  approved_at      DateTime?
+  rejection_reason String?   @db.Text
 
-  applied_at DateTime
+  applied_at DateTime?
 
-  entity_version Int
+  entity_version Int @default(1)
 
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  requested_user users @relation("journals_requested", fields: [requested_by], references: [id])
-  approved_user  users @relation("journals_approved", fields: [approved_by], references: [id])
+  requested_user users  @relation("journals_requested", fields: [requested_by], references: [id])
+  approved_user  users? @relation("journals_approved", fields: [approved_by], references: [id])
 }

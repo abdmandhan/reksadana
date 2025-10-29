@@ -1,331 +1,267 @@
-import prisma from "./index.js";
-
-const seedReferences = () => {
-  const investorTypes = ['Individual', 'Corporate', 'Selling Agent']
-  const investorStatuses = ['Entried', 'Approved', 'Rejected']
-  const genders = ['Male', 'Female']
-  const relationships = ['Child', 'Husband', 'Wife', 'Cousin', 'Brother', 'Sister', 'Parent']
-  const riskLevels = ['Low', 'Medium', 'High']
-  const addressTypes = ['Home', 'Office', 'Other']
-  const religions = ['Islam', 'Catholic', 'Protestant', 'Hindu', 'Buddhist', 'Confucian', 'Other']
-  const transactionTypes = ['Subscription', 'Redemption', 'Switching In', 'Switching Out']
-  const transactionStatuses = ['Entried', 'Approved', 'Rejected']
-  const educations = ['Sekolah Dasar (SD)', 'Sekolah Menengah Pertama (SMP)', 'Sekolah Menengah Atas (SMA)', 'Diploma III', 'Diploma IV atau Sarjana (S1)', ' S2 Magister', 'S3 Doktor', 'Other']
-  const cardTypes = ['KTP', 'Passport']
-  const incomes = ['<10 Juta/Tahun', '>10-50 Juta', '> 50 – 100 Juta/ tahun', '> 100 – 500 Juta/ tahun', '> 500 Juta – 1 Milyar/ tahun', '> 1 Milyar/ tahunkj']
-  const incomeSources = ['Gaji', 'Keuntungan Bisnis', 'Bunga Tabungan', 'Warisan', 'Dana dari Orang Tua/Anak', 'Hibah', 'Dana dari suami/istri', 'Undian', 'Keuntungan Investasi', 'Other']
-  const maritals = ['Married', 'Single', 'Divorced', 'Widowed']
-  const nationalities = ['Indonesia', 'Malaysia', 'Singapore', 'Other']
-  const jobs = ['Pelajar/Mahasiswa', 'Ibu Rumah Tangga', 'Wiraswasta/Pengusaha', 'PNS/BUMN', 'TNI/POLRI', 'Pensiun', 'Dosen/Pengajar/Guru', 'Pegawai Swasta', 'Other']
-  const jobCategories = ['IT,Fintech,E-Commerce', 'Bank dan Institusi Keuangan', 'Pendidikan', 'Konsultan dan Jasa', 'Perdagangan', 'Media,Entertainment', 'Other']
-  const jobRoles = ['Komisaris,Direksi,C Level', 'Kepala Divisi,VP,AVP', 'Manajer,Kabag', 'Leader,Kepala Unit', 'Officer,Staff', 'Other']
-  const agentTypes = ['Retail', 'Corporate', 'Selling Agent', 'Online']
-  const agentLevels = ['Head', 'Sales', 'Sub Sales']
-  const corporateLegals = ['Koperasi', 'Perseroan Terbatas (PT)', 'Persekutuan Komanditer (CV)', 'Persekutuan Firma (Firma)', 'Perusahaan Perorangan', 'Yayasan']
-
-  const banks = [
-    {
-      name: 'Bank Central Asia', code: 'BCA', branchs: [
-        { name: 'BCA Jakarta Pusat' },
-        { name: 'BCA Jakarta Selatan' },
-        { name: 'BCA Jakarta Timur' },
-        { name: 'BCA Jakarta Barat' },
-      ]
-    }
-  ]
-
-  const holidays = [
-    { name: 'Libur Lebaran Idul Fitri', date: new Date('2025-04-22') },
-  ]
-
-  const fundTypes = [
-    { name: 'Money Market', riskPoint: 1 },
-    { name: 'Fixed Income', riskPoint: 2 },
-    { name: 'Combine', riskPoint: 3 },
-    { name: 'Saham', riskPoint: 4 },
-    { name: 'Index', riskPoint: 5 },
-    { name: 'KPD/Discrenary Fund', riskPoint: 6 },
-    { name: 'RDPT', riskPoint: 7 },
-    { name: 'Other', riskPoint: 8 },
-  ]
-
-  const menus = {
-    'dashboard': 'dashboard',
-    'investors': 'investors',
-    'funds': 'funds',
-    'transactions': 'transactions',
-    'reports': 'reports',
-    'settings': 'settings',
-    'users': 'users',
-    'roles': 'roles',
-  }
-
-  const permissions = {
-    investorsCreate: `${menus.investors}.create`,
-    investorsUpdate: `${menus.investors}.update`,
-    investorsDelete: `${menus.investors}.delete`,
-    investorsView: `${menus.investors}.view`,
-    investorsExport: `${menus.investors}.export`,
-    investorsImport: `${menus.investors}.import`,
-    investorsPrint: `${menus.investors}.print`,
-    investorsApprove: `${menus.investors}.approve`,
-    investorsReject: `${menus.investors}.reject`,
-  }
-
-  const roles = [
-    {
-      name: 'Maker',
-      permissions: [
-        permissions.investorsCreate,
-        permissions.investorsUpdate,
-        permissions.investorsDelete,
-        permissions.investorsView,
-        permissions.investorsExport,
-        permissions.investorsImport,
-        permissions.investorsPrint,
-      ]
-    },
-    {
-      name: 'Approval',
-      permissions: [
-        permissions.investorsView,
-        permissions.investorsExport,
-        permissions.investorsPrint,
-        permissions.investorsApprove,
-        permissions.investorsReject,
-      ]
-    }
-  ]
-
-  return Promise.all([
-    investorTypes.map(async (investorType) => {
-      await prisma.investor_types.upsert({
-        where: { name: investorType },
-        create: { name: investorType },
-        update: { name: investorType },
-      })
-    }),
-    investorStatuses.map(async (investorStatus) => {
-      await prisma.investor_statuses.upsert({
-        where: { name: investorStatus },
-        create: { name: investorStatus },
-        update: { name: investorStatus },
-      })
-    }),
-    genders.map(async (gender) => {
-      await prisma.genders.upsert({
-        where: { name: gender },
-        create: { name: gender },
-        update: { name: gender },
-      })
-    }),
-    relationships.map(async (relationship) => {
-      await prisma.relationships.upsert({
-        where: { name: relationship },
-        create: { name: relationship },
-        update: { name: relationship },
-      })
-    }),
-    riskLevels.map(async (riskLevel) => {
-      await prisma.risk_levels.upsert({
-        where: { name: riskLevel },
-        create: { name: riskLevel },
-        update: { name: riskLevel },
-      })
-    }),
-    addressTypes.map(async (addressType) => {
-      await prisma.address_types.upsert({
-        where: { name: addressType },
-        create: { name: addressType },
-        update: { name: addressType },
-      })
-    }),
-    religions.map(async (religion) => {
-      await prisma.religions.upsert({
-        where: { name: religion },
-        create: { name: religion },
-        update: { name: religion },
-      })
-    }),
-    transactionTypes.map(async (transactionType) => {
-      await prisma.transaction_types.upsert({
-        where: { name: transactionType },
-        create: { name: transactionType },
-        update: { name: transactionType },
-      })
-    }),
-    transactionStatuses.map(async (transactionStatus) => {
-      await prisma.transaction_statuses.upsert({
-        where: { name: transactionStatus },
-        create: { name: transactionStatus },
-        update: { name: transactionStatus },
-      })
-    }),
-    educations.map(async (education) => {
-      await prisma.educations.upsert({
-        where: { name: education },
-        create: { name: education },
-        update: { name: education },
-      })
-    }),
-    cardTypes.map(async (cardType) => {
-      await prisma.card_types.upsert({
-        where: { name: cardType },
-        create: { name: cardType },
-        update: { name: cardType },
-      })
-    }),
-    incomes.map(async (income) => {
-      await prisma.incomes.upsert({
-        where: { name: income },
-        create: { name: income },
-        update: { name: income },
-      })
-    }),
-    incomeSources.map(async (incomeSource) => {
-      await prisma.income_sources.upsert({
-        where: { name: incomeSource },
-        create: { name: incomeSource },
-        update: { name: incomeSource },
-      })
-    }),
-    maritals.map(async (marital) => {
-      await prisma.maritals.upsert({
-        where: { name: marital },
-        create: { name: marital },
-        update: { name: marital },
-      })
-    }),
-    nationalities.map(async (nationality) => {
-      await prisma.nationalities.upsert({
-        where: { name: nationality },
-        create: { name: nationality },
-        update: { name: nationality },
-      })
-    }),
-    jobs.map(async (job) => {
-      await prisma.jobs.upsert({
-        where: { name: job },
-        create: { name: job },
-        update: { name: job },
-      })
-    }),
-    jobCategories.map(async (jobCategory) => {
-      await prisma.job_categories.upsert({
-        where: { name: jobCategory },
-        create: { name: jobCategory },
-        update: { name: jobCategory },
-      })
-    }),
-    jobRoles.map(async (jobRole) => {
-      await prisma.job_roles.upsert({
-        where: { name: jobRole },
-        create: { name: jobRole },
-        update: { name: jobRole },
-      })
-    }),
-    agentTypes.map(async (agentType) => {
-      await prisma.agent_types.upsert({
-        where: { name: agentType },
-        create: { name: agentType },
-        update: { name: agentType },
-      })
-    }),
-    agentLevels.map(async (agentLevel) => {
-      await prisma.agent_levels.upsert({
-        where: { name: agentLevel },
-        create: { name: agentLevel },
-        update: { name: agentLevel },
-      })
-    }),
-    banks.map(async (bank) => {
-      const _bank = await prisma.banks.upsert({
-        where: { name: bank.name },
-        create: {
-          code: bank.code,
-          name: bank.name,
-          is_active: true
-        },
-        update: {
-          code: bank.code,
-          name: bank.name,
-          is_active: true
-        },
-      })
-
-      bank.branchs.map(async (branch) => {
-        await prisma.bank_branchs.upsert({
-          where: { name: branch.name },
-          create: {
-            name: branch.name,
-            bank_id: _bank.id,
-          },
-          update: branch,
-        })
-      })
-    }),
-    holidays.map(async (holiday) => {
-      await prisma.holidays.upsert({
-        where: { date: holiday.date },
-        create: holiday,
-        update: holiday,
-      })
-    }),
-    fundTypes.map(async (fundType) => {
-      await prisma.fund_types.upsert({
-        where: { name: fundType.name },
-        create: { name: fundType.name, risk_point: fundType.riskPoint },
-        update: { name: fundType.name, risk_point: fundType.riskPoint },
-      })
-    }),
-    corporateLegals.map(async (corporateLegal) => {
-      await prisma.corporate_legals.upsert({
-        where: { name: corporateLegal },
-        create: { name: corporateLegal },
-        update: { name: corporateLegal },
-      })
-    }),
-    Object.values(permissions).map(async (permission) => {
-      await prisma.permissions.upsert({
-        where: { name: permission },
-        create: { name: permission },
-        update: { name: permission },
-      })
-    }),
-    roles.map(async (role) => {
-      const _role = await prisma.roles.upsert({
-        where: { name: role.name },
-        create: { name: role.name },
-        update: { name: role.name },
-      })
-
-      role.permissions.map(async (permission) => {
-        const _permission = await prisma.permissions.findFirst({ where: { name: permission } })
-        if (_permission) {
-          await prisma.role_permissions.upsert({
-            where: { permission_id_role_id: { permission_id: _permission.id, role_id: _role.id } },
-            create: { permission_id: _permission.id, role_id: _role.id },
-            update: { permission_id: _permission.id, role_id: _role.id },
-          })
-        } else {
-          console.warn('permission not found', permission)
-        }
-      })
-    }),
-  ])
-}
+import prisma from './index.js';
+import seedReferences from './seeds/references.js';
+import bcrypt from 'bcryptjs';
+import { faker } from '@faker-js/faker';
 
 const main = async () => {
   await seedReferences();
+  // seed users
+
+  const users = [
+    {
+      name: 'Admin',
+      username: 'admin',
+      password: '12341234',
+      roles: ['Admin'],
+    },
+    {
+      name: 'Maker 1',
+      username: 'maker1',
+      password: '12341234',
+      roles: ['Maker'],
+    },
+    {
+      name: 'Approver 1',
+      username: 'approver1',
+      password: '12341234',
+      roles: ['Approver'],
+    },
+  ];
+
+  await Promise.all(
+    users.map(async (user) => {
+      const _user = await prisma.users.upsert({
+        where: { username: user.username },
+        create: {
+          name: user.name,
+          username: user.username,
+          password: bcrypt.hashSync(user.password, 10),
+        },
+        update: {
+          name: user.name,
+          username: user.username,
+          password: bcrypt.hashSync(user.password, 10),
+        },
+      });
+
+      for (const role of user.roles) {
+        const _role = await prisma.roles.findFirst({ where: { name: role } });
+        if (_role) {
+          await prisma.user_roles.upsert({
+            where: {
+              user_id_role_id: { user_id: _user.id, role_id: _role.id },
+            },
+            create: {
+              user_id: _user.id,
+              role_id: _role.id,
+            },
+            update: {
+              user_id: _user.id,
+              role_id: _role.id,
+            },
+          });
+        }
+      }
+    })
+  );
+
+  const maker = await prisma.users.findFirst({ where: { username: 'maker1' } });
+  const approver = await prisma.users.findFirst({
+    where: { username: 'approver1' },
+  });
+
+  if (!maker || !approver) return;
+
+  const agentLevels = await prisma.agent_levels.findMany();
+  const agentTypes = await prisma.agent_types.findMany();
+
+  const agentRetail = agentTypes.find((a) => a.name == 'Retail');
+
+  if (!agentRetail) return;
+
+  // seed agents (retail)
+  const agents = [
+    {
+      agent_level_id: agentLevels.find((a) => a.name == 'Head')?.id,
+      agent_type_id: agentRetail.id,
+      code: 'HEAD01',
+      first_name: faker.person.firstName(),
+      middle_name: faker.person.middleName(),
+      last_name: faker.person.lastName(),
+      email: 'head_agent@gmail.com',
+      phone_number: faker.phone.number(),
+      is_active: true,
+      childrens: [
+        {
+          agent_level_id: agentLevels.find((a) => a.name == 'Sales')?.id,
+          agent_type_id: agentRetail.id,
+          code: 'SALES01',
+          first_name: faker.person.firstName(),
+          middle_name: faker.person.middleName(),
+          last_name: faker.person.lastName(),
+          email: 'sales_agent@gmail.com',
+          phone_number: faker.phone.number(),
+          is_active: true,
+          childrens: [
+            {
+              agent_level_id: agentLevels.find((a) => a.name == 'Sub Sales')
+                ?.id,
+              agent_type_id: agentRetail.id,
+              code: 'SUBSALES01',
+              first_name: faker.person.firstName(),
+              middle_name: faker.person.middleName(),
+              last_name: faker.person.lastName(),
+              email: 'sub_sales_agent@gmail.com',
+              phone_number: faker.phone.number(),
+              is_active: true,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const upsertAgent = async (agent: any, agent_parent_id?: number) => {
+    const _agent = await prisma.agents.upsert({
+      where: { code: agent.code },
+      create: {
+        agent_level_id: agent.agent_level_id!,
+        agent_type_id: agent.agent_type_id,
+        agent_parent_id,
+        code: agent.code,
+        first_name: agent.first_name,
+        middle_name: agent.middle_name,
+        last_name: agent.last_name,
+        email: agent.email,
+        phone_number: agent.phone_number,
+        is_active: agent.is_active,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      update: {
+        agent_level_id: agent.agent_level_id,
+        agent_type_id: agent.agent_type_id,
+        code: agent.code,
+        first_name: agent.first_name,
+        middle_name: agent.middle_name,
+        last_name: agent.last_name,
+        email: agent.email,
+        phone_number: agent.phone_number,
+        is_active: agent.is_active,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    });
+
+    if (agent.childrens) {
+      for (let i = 0; i < agent.childrens.length; i++) {
+        const child = agent.childrens[i];
+        await upsertAgent(child, _agent.id);
+      }
+    }
+  }
+
+  for (let i = 0; i < agents.length; i++) {
+    const agent = agents[i];
+    await upsertAgent(agent)
+  }
+
+  const __agents = await prisma.agents.findMany();
+  const individualInvestorType = await prisma.investor_types.findFirst({ where: { name: 'Individual' } })
+  if (!individualInvestorType) return;
+
+  //seed investors (retail)
+  const upsertInvestorIndividual = async (email: string) => {
+    const _investor = await prisma.investors.upsert({
+      where: { email },
+      create: {
+        email,
+        first_name: faker.person.firstName(),
+        middle_name: faker.person.middleName(),
+        last_name: faker.person.lastName(),
+        phone_number: faker.phone.number(),
+        risk_level_id: 1,
+        risk_point: faker.number.int({ min: 1, max: 100 }),
+        sid: faker.string.uuid(),
+        // random agent from __agents
+        agent_id: __agents[faker.number.int({ min: 0, max: __agents.length - 1 })].id,
+        investor_type_id: individualInvestorType.id,
+        version: 1,
+      },
+      update: {}
+    });
+
+    // heirs
+    const investorHeirs = await prisma.investor_heirs.findMany({ where: { investor_id: _investor.id } })
+    if (investorHeirs.length == 0) {
+      await prisma.investor_heirs.createMany({
+        data: [
+          { investor_id: _investor.id, name: faker.person.firstName(), relation_id: faker.number.int({ min: 1, max: 7 }), },
+          { investor_id: _investor.id, name: faker.person.firstName(), relation_id: faker.number.int({ min: 1, max: 7 }), },
+        ],
+      });
+    }
+
+    // addresses
+    const investorAddresses = await prisma.investor_addresses.findMany({ where: { investor_id: _investor.id } })
+    if (investorAddresses.length == 0) {
+      await prisma.investor_addresses.create({
+        data: {
+          investor_id: _investor.id,
+          address_type_id: faker.number.int({ min: 1, max: 3 }),
+          province_id: "1",
+          city_id: "1",
+          district_id: "1",
+          subdistrict_id: "1",
+          postal_code: "qasd",
+          address: faker.location.streetAddress(),
+          address_line_2: faker.location.secondaryAddress(),
+        }
+      })
+    }
+
+    // individual
+    const investorIndividual = await prisma.investor_individuals.findFirst({ where: { investor_id: _investor.id } })
+
+    if (!investorIndividual) {
+      await prisma.investor_individuals.create({
+        data: {
+          investor_id: _investor.id,
+          birth_date: faker.date.birthdate(),
+          birth_place: faker.location.city(),
+          mother_name: faker.person.fullName(),
+          is_employee: faker.datatype.boolean(),
+          tax_number: faker.string.uuid(),
+          tax_effective_date: faker.date.past(),
+          gender_id: faker.number.int({ min: 1, max: 2 }),
+          education_id: faker.number.int({ min: 1, max: 8 }),
+          card_type_id: faker.number.int({ min: 1, max: 2 }),
+          card_number: faker.string.uuid(),
+          income_id: faker.number.int({ min: 1, max: 6 }),
+          income_source_id: faker.number.int({ min: 1, max: 10 }),
+          marital_id: faker.number.int({ min: 1, max: 4 }),
+          nationality_id: faker.number.int({ min: 1, max: 4 }),
+          job_id: faker.number.int({ min: 1, max: 9 }),
+          job_category_id: faker.number.int({ min: 1, max: 7 }),
+          job_role_id: faker.number.int({ min: 1, max: 6 }),
+        }
+      })
+    }
+  }
+  const investors = ['investor_01@gmail.com', 'investor_02@gmail.com', 'investor_03@gmail.com']
+  for (let i = 0; i < investors.length; i++) {
+    const investor = investors[i];
+    await upsertInvestorIndividual(investor)
+  }
 };
 
 main()
   .then(async () => {
     await prisma.$disconnect();
-    console.log("Seed complete");
+    console.log('Seed complete');
   })
   .catch(async (e) => {
-    console.error("Seed failed:", e);
+    console.error('Seed failed:', e);
     await prisma.$disconnect();
     process.exit(1);
   });

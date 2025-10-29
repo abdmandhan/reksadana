@@ -11,18 +11,6 @@ CREATE TABLE `investor_types` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `investor_statuses` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updated_at` DATETIME(3) NOT NULL,
-    `deleted_at` DATETIME(3) NULL,
-
-    UNIQUE INDEX `investor_statuses_name_key`(`name`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `genders` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -230,6 +218,7 @@ CREATE TABLE `agent_types` (
 CREATE TABLE `agent_levels` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `fee` DOUBLE NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
@@ -343,6 +332,7 @@ CREATE TABLE `funds` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
+    `version` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `funds_code_key`(`code`),
     PRIMARY KEY (`id`)
@@ -376,6 +366,7 @@ CREATE TABLE `agents` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
+    `version` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `agents_code_key`(`code`),
     UNIQUE INDEX `agents_email_key`(`email`),
@@ -393,16 +384,12 @@ CREATE TABLE `investors` (
     `risk_level_id` INTEGER NULL,
     `risk_point` INTEGER NULL,
     `sid` VARCHAR(191) NULL,
-    `investor_status_id` INTEGER NOT NULL,
     `agent_id` INTEGER NOT NULL,
     `investor_type_id` INTEGER NOT NULL,
     `version` INTEGER NOT NULL DEFAULT 1,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `created_by` INTEGER NOT NULL,
     `updated_at` DATETIME(3) NOT NULL,
-    `updated_by` INTEGER NULL,
     `deleted_at` DATETIME(3) NULL,
-    `deleted_by` INTEGER NULL,
 
     UNIQUE INDEX `investors_email_key`(`email`),
     UNIQUE INDEX `investors_sid_key`(`sid`),
@@ -470,7 +457,6 @@ CREATE TABLE `investor_heirs` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `investor_heirs_investor_id_key`(`investor_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -516,6 +502,7 @@ CREATE TABLE `user_roles` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
+    UNIQUE INDEX `user_roles_user_id_role_id_key`(`user_id`, `role_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -560,22 +547,21 @@ CREATE TABLE `role_permissions` (
 CREATE TABLE `journals` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `entity` VARCHAR(191) NOT NULL,
-    `entity_id` VARCHAR(191) NOT NULL,
+    `entity_id` VARCHAR(191) NULL,
     `action` ENUM('CREATE', 'UPDATE', 'DELETE', 'RESTORE') NOT NULL,
     `status` ENUM('PENDING', 'APPROVED', 'REJECTED', 'CANCELLED') NOT NULL,
     `requested_by` INTEGER NOT NULL,
     `requested_at` DATETIME(3) NOT NULL,
-    `reason` TEXT NOT NULL,
-    `before_data` TEXT NOT NULL,
-    `after_data` TEXT NOT NULL,
-    `approved_by` INTEGER NOT NULL,
-    `approved_at` DATETIME(3) NOT NULL,
-    `rejection_reason` TEXT NOT NULL,
-    `applied_at` DATETIME(3) NOT NULL,
-    `entity_version` INTEGER NOT NULL,
+    `reason` TEXT NULL,
+    `before_data` TEXT NULL,
+    `after_data` TEXT NULL,
+    `approved_by` INTEGER NULL,
+    `approved_at` DATETIME(3) NULL,
+    `rejection_reason` TEXT NULL,
+    `applied_at` DATETIME(3) NULL,
+    `entity_version` INTEGER NOT NULL DEFAULT 1,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
-    `deleted_at` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -603,9 +589,6 @@ ALTER TABLE `investors` ADD CONSTRAINT `investors_agent_id_fkey` FOREIGN KEY (`a
 
 -- AddForeignKey
 ALTER TABLE `investors` ADD CONSTRAINT `investors_investor_type_id_fkey` FOREIGN KEY (`investor_type_id`) REFERENCES `investor_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_investor_status_id_fkey` FOREIGN KEY (`investor_status_id`) REFERENCES `investor_statuses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investors` ADD CONSTRAINT `investors_risk_level_id_fkey` FOREIGN KEY (`risk_level_id`) REFERENCES `risk_levels`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -677,4 +660,4 @@ ALTER TABLE `role_permissions` ADD CONSTRAINT `role_permissions_role_id_fkey` FO
 ALTER TABLE `journals` ADD CONSTRAINT `journals_requested_by_fkey` FOREIGN KEY (`requested_by`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `journals` ADD CONSTRAINT `journals_approved_by_fkey` FOREIGN KEY (`approved_by`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `journals` ADD CONSTRAINT `journals_approved_by_fkey` FOREIGN KEY (`approved_by`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

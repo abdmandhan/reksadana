@@ -4,12 +4,11 @@
 
 ✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
 ## Finish your CI setup
 
 [Click here to finish setting up your workspace!](https://cloud.nx.app/connect/OZjEMQagCt)
-
 
 ## Run tasks
 
@@ -57,7 +56,6 @@ You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx 
 
 [Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-
 [Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 ## Install Nx Console
@@ -70,12 +68,13 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 Learn more:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
+- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 And join the Nx community:
+
 - [Discord](https://go.nx.dev/community)
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
@@ -84,48 +83,57 @@ And join the Nx community:
 🚀 Hot Reload Speed Optimizations Complete!
 I've implemented several optimizations to dramatically improve your hot reload speed. Here are the different options, ranked by speed:
 ⚡ Fastest Options (Recommended)
-1. Ultra-Fast with tsx (Fastest)
-Speed: ~200-500ms restart time
-Features: Direct TypeScript execution, no webpack overhead
-Best for: Development with frequent changes
-2. Fast with nodemon
-Speed: ~500ms-1s restart time
-Features: File watching with tsx, configurable delays
-Best for: Balanced performance and features
-🔧 Standard Options
-3. Optimized webpack (Your original method, now faster)
-Speed: ~2-3s restart time (improved from ~5-8s)
-Features: Full webpack build with optimizations
-Best for: When you need webpack features
-📊 Performance Improvements Made
-Optimization	Impact	Description
-tsx watch	🚀 10x faster	Direct TypeScript execution, no compilation
-Webpack cache	🚀 3x faster	Filesystem caching for incremental builds
-Source map optimization	🚀 2x faster	Faster source map generation
-TypeScript incremental	🚀 2x faster	Only recompiles changed files
-Skip lib checks	🚀 1.5x faster	Skips type checking of node_modules
-Optimization disabled	🚀 2x faster	No minification/optimization in dev
-🛠️ Configuration Files Created/Updated
-nodemon.json - Fast file watching with tsx
-webpack.config.js - Optimized with caching and faster source maps
-tsconfig.app.json - Incremental compilation and skip lib checks
-package.json - New dev scripts and Nx targets
-🎯 Recommended Usage
-For active development: Use npx nx dev:fast api (tsx watch)
-For debugging: Use npx nx dev api (nodemon with tsx)
-For production builds: Use npx nx serve api (webpack)
-🔥 Speed Comparison
-Method	Cold Start	Hot Reload	Memory Usage
-tsx watch	~1s	~200ms	Low
-nodemon	~1.5s	~500ms	Low
-webpack (optimized)	~3s	~2s	Medium
-webpack (original)	~5s	~5s	High
-The tsx watch method should give you the fastest hot reload experience for your NestJS API development!
 
+1. Ultra-Fast with tsx (Fastest)
+   Speed: ~200-500ms restart time
+   Features: Direct TypeScript execution, no webpack overhead
+   Best for: Development with frequent changes
+2. Fast with nodemon
+   Speed: ~500ms-1s restart time
+   Features: File watching with tsx, configurable delays
+   Best for: Balanced performance and features
+   🔧 Standard Options
+3. Optimized webpack (Your original method, now faster)
+   Speed: ~2-3s restart time (improved from ~5-8s)
+   Features: Full webpack build with optimizations
+   Best for: When you need webpack features
+   📊 Performance Improvements Made
+   Optimization Impact Description
+   tsx watch 🚀 10x faster Direct TypeScript execution, no compilation
+   Webpack cache 🚀 3x faster Filesystem caching for incremental builds
+   Source map optimization 🚀 2x faster Faster source map generation
+   TypeScript incremental 🚀 2x faster Only recompiles changed files
+   Skip lib checks 🚀 1.5x faster Skips type checking of node_modules
+   Optimization disabled 🚀 2x faster No minification/optimization in dev
+   🛠️ Configuration Files Created/Updated
+   nodemon.json - Fast file watching with tsx
+   webpack.config.js - Optimized with caching and faster source maps
+   tsconfig.app.json - Incremental compilation and skip lib checks
+   package.json - New dev scripts and Nx targets
+   🎯 Recommended Usage
+   For active development: Use npx nx dev:fast api (tsx watch)
+   For debugging: Use npx nx dev api (nodemon with tsx)
+   For production builds: Use npx nx serve api (webpack)
+   🔥 Speed Comparison
+   Method Cold Start Hot Reload Memory Usage
+   tsx watch ~1s ~200ms Low
+   nodemon ~1.5s ~500ms Low
+   webpack (optimized) ~3s ~2s Medium
+   webpack (original) ~5s ~5s High
+   The tsx watch method should give you the fastest hot reload experience for your NestJS API development!
 
 sudo kill -9 `sudo lsof -t -i:3400`
 
-
 docker build --file apps/api/Dockerfile . -t abdmandhan/freelance:reksadana_api_latest
-docker run -p 3402:3100 abdmandhan/freelance:reksadana_api_latest -e DATABASE_URL=mysql://root:root@192.168.18.223:3306/reksadana
+docker run -p 3404:3100 -h 0.0.0.0 abdmandhan/freelance:reksadana_api_latest -e DATABASE_URL=mysql://root:root@192.168.18.223:3306/reksadana
+docker run -p 3401:3400 abdmandhan/freelance:reksadana_api_latest -e DATABASE_URL=mysql://root:root@192.168.18.223:3306/reksadana
+docker run -p 3401:3400 abdmandhan/freelance:reksadana_api_latest
 docker push abdmandhan/freelance:reksadana_api_latest
+
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=12341234" -e "MSSQL_PID=Evaluation" -p 1433:1433 --name sqlpreview --hostname sqlpreview -d mcr.microsoft.com/mssql/server:2025-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=b1kL6h0FB-up1?JiA" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-CU16-ubuntu-22.04
+
+agent_head
+
+agent_member_1
+agent_member_2
