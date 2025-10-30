@@ -137,3 +137,51 @@ agent_head
 
 agent_member_1
 agent_member_2
+
+
+management_fee_rate
+Fee tahunan MI (% dari AUM)
+
+Rumus Management Fee Harian
+Biaya MI Harian = NAB Hari Ini × Fee Tahunan / 365
+
+Kalau produk pakai basis 360 (seperti di beberapa fund accounting internasional), ganti 365 dengan 360.
+
+custodian_fee_rate
+Fee tahunan Kustodian
+
+6. Jika Ada Bank Kustodian Fee
+
+Biasanya ada juga:
+
+Custodian Fee ≈ 0.25% per tahun
+Maka rumus dan logikanya sama, hanya beda akun akrual:
+
+Biaya Kustodian Harian = NAB × 0.25% / 365
+
+📊 7. Total Expense Ratio (TER)
+
+Kalau kamu mau tampilkan performa ke investor, bisa juga hitung Total Expense Ratio (TER):
+
+TER = Total Biaya (MI + Kustodian + Lainnya)/ Rata-rata NAB × 100%
+
+×100%
+
+Biasanya TER tahunan untuk reksa dana di Indonesia: 1% – 3% tergantung jenisnya.
+
+===
+valuation_frequency	Frekuensi NAB dihitung (harian / mingguan)
+
+distribution_policy	Apakah dividen dibagikan atau reinvestasi
+
+
+💡 Setelah hari pertama, NAB akan berubah tergantung nilai pasar aset, biaya, dan transaksi investor.
+
+===
+
+🧾 4. Ilustrasi Harian NAB
+Tanggal	Aset	Nilai Aset	Kewajiban	NAB Total	Unit Beredar	NAB/Unit
+01 Okt	Kas + Saham	10,000,000,000	0	10,000,000,000	10,000,000	1,000
+02 Okt	Nilai saham naik 2%	10,200,000,000	0	10,200,000,000	10,000,000	1,020
+03 Okt	Investor beli Rp1M	11,200,000,000	0	11,200,000,000	10,980,392	1,020
+04 Okt	Biaya MI Rp10jt	11,190,000,000	10,000,000	11,180,000,000	10,980,392	1,018.2

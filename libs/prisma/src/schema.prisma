@@ -279,6 +279,14 @@ model fund_document_types {
   fund_documents fund_documents[]
 }
 
+model fund_distribution_policies {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
 // end of references table
 
 model funds {
@@ -317,18 +325,23 @@ model funds {
   min_rest_switch        MinRestType @default(AMOUNT) // default -> amount
   min_rest_switch_amount Float // minimal rest amount for switch
 
-  nab            Float
-  nav_per_unit   Float
-  nav_updated_at DateTime? // last updated NAV
+  nav              Float // nilai aktiva bersih / net asset value
+  nav_per_unit     Float // nav per unit
+  outstanding_unit Float // total unit yang beredar
+  nav_updated_at   DateTime? // last updated NAV
 
-  initial_nav  Float
-  initial_unit Float
+  initial_nav          Float // modal yang disetor diawal
+  initial_unit         Float // initial unit = initial nav / initial_nav_per_unit
+  initial_nav_per_unit Float // nav per unit diawal
 
   max_investors   Int   @default(0) // 0 -> unlimited
   max_hold        Int   @default(0) // 0 -> unlimited -> max units investor can hold
   max_hold_amount Float @default(0) // 0 -> unlimited -> max amount investor can hold (in rupiah/usd)
 
-  unit_precision Int @default(2) // how many decimal places for unit -> default -> 0.01
+  unit_precision Int @default(4) // how many decimal places for unit -> default -> 0.01
+
+  management_fee_rate Float // Fee tahunan MI (% dari AUM)
+  yearly_basis        Int   @default(365) // pembagi mgt fee, 360,365,366
 
   start_date DateTime
   // optional: for fund that has a limited period

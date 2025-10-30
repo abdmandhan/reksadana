@@ -297,12 +297,48 @@ CREATE TABLE `corporate_legals` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `fund_asset_types` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `code` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `fund_asset_types_code_key`(`code`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `fund_document_types` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `fund_distribution_policies` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `funds` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `ksei_code` VARCHAR(191) NULL,
     `code` VARCHAR(191) NOT NULL,
     `color` VARCHAR(191) NULL,
+    `fund_type_id` INTEGER NOT NULL,
     `bank_id` INTEGER NOT NULL,
     `bank_branch_id` INTEGER NOT NULL,
     `account_number` VARCHAR(191) NOT NULL,
@@ -310,10 +346,38 @@ CREATE TABLE `funds` (
     `launched_at` DATETIME(3) NOT NULL,
     `max_red_percentage` DOUBLE NOT NULL,
     `max_switch_percentage` DOUBLE NOT NULL,
-    `max_unit_issued` DOUBLE NULL,
+    `max_unit_issued` DOUBLE NOT NULL,
     `min_red` DOUBLE NOT NULL,
-    `can_switch_to` VARCHAR(191) NOT NULL,
-    `can_switch_to_list` TEXT NOT NULL,
+    `min_sub` DOUBLE NOT NULL,
+    `min_swin` DOUBLE NOT NULL,
+    `min_swout` DOUBLE NOT NULL,
+    `recommend_sub` JSON NULL,
+    `recommend_red` JSON NULL,
+    `recommend_switch` JSON NULL,
+    `sub_settlement_days` INTEGER NOT NULL DEFAULT 0,
+    `red_settlement_days` INTEGER NOT NULL DEFAULT 0,
+    `switching_settlement_days` INTEGER NOT NULL DEFAULT 0,
+    `min_rest_red` ENUM('UNIT', 'AMOUNT') NOT NULL DEFAULT 'AMOUNT',
+    `min_rest_red_amount` DOUBLE NOT NULL,
+    `min_rest_switch` ENUM('UNIT', 'AMOUNT') NOT NULL DEFAULT 'AMOUNT',
+    `min_rest_switch_amount` DOUBLE NOT NULL,
+    `nav` DOUBLE NOT NULL,
+    `nav_per_unit` DOUBLE NOT NULL,
+    `outstanding_unit` DOUBLE NOT NULL,
+    `nav_updated_at` DATETIME(3) NULL,
+    `initial_nav` DOUBLE NOT NULL,
+    `initial_unit` DOUBLE NOT NULL,
+    `initial_nav_per_unit` DOUBLE NOT NULL,
+    `max_investors` INTEGER NOT NULL DEFAULT 0,
+    `max_hold` INTEGER NOT NULL DEFAULT 0,
+    `max_hold_amount` DOUBLE NOT NULL DEFAULT 0,
+    `unit_precision` INTEGER NOT NULL DEFAULT 4,
+    `management_fee_rate` DOUBLE NOT NULL,
+    `valuation_frequency` INTEGER NOT NULL DEFAULT 365,
+    `start_date` DATETIME(3) NOT NULL,
+    `end_date` DATETIME(3) NULL,
+    `can_switch_to` VARCHAR(191) NOT NULL DEFAULT 'all',
+    `can_switch_to_list` JSON NULL,
     `fee_sub` DOUBLE NOT NULL,
     `fee_red` DOUBLE NOT NULL,
     `fee_swin` DOUBLE NOT NULL,
@@ -328,7 +392,6 @@ CREATE TABLE `funds` (
     `can_redeem` BOOLEAN NOT NULL,
     `can_subscript` BOOLEAN NOT NULL,
     `can_switch` BOOLEAN NOT NULL,
-    `fund_type_id` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
@@ -342,7 +405,22 @@ CREATE TABLE `funds` (
 CREATE TABLE `fund_allocations` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fund_id` INTEGER NOT NULL,
+    `fund_asset_type_id` INTEGER NOT NULL,
     `allocation` DOUBLE NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `fund_documents` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `fund_id` INTEGER NOT NULL,
+    `fund_document_type_id` INTEGER NOT NULL,
+    `url` VARCHAR(191) NOT NULL,
+    `date` DATETIME(3) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
@@ -574,6 +652,15 @@ ALTER TABLE `funds` ADD CONSTRAINT `funds_fund_type_id_fkey` FOREIGN KEY (`fund_
 
 -- AddForeignKey
 ALTER TABLE `fund_allocations` ADD CONSTRAINT `fund_allocations_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `fund_allocations` ADD CONSTRAINT `fund_allocations_fund_asset_type_id_fkey` FOREIGN KEY (`fund_asset_type_id`) REFERENCES `fund_asset_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `fund_documents` ADD CONSTRAINT `fund_documents_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `fund_documents` ADD CONSTRAINT `fund_documents_fund_document_type_id_fkey` FOREIGN KEY (`fund_document_type_id`) REFERENCES `fund_document_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_level_id_fkey` FOREIGN KEY (`agent_level_id`) REFERENCES `agent_levels`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
