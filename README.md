@@ -191,3 +191,6 @@ question:
 
 1. agent movement strategy? override/hybrid
 2. mgt fee distribution to MI and agents
+
+
+kalau agent effective date nya udah habis atau agent nya udah resign, investor gapunya agent masih bisa transaksi atau agentnya diganti?

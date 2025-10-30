@@ -447,16 +447,19 @@ model funds {
   can_subscript Boolean
   can_switch    Boolean
 
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  deleted_at        DateTime?
-  version           Int                 @default(1) //bump on each approved change
-  fund_type         fund_types          @relation(fields: [fund_type_id], references: [id])
-  fund_allocations  fund_allocations[]
-  fund_documents    fund_documents[]
-  fund_navs         fund_navs[]
-  investor_accounts investor_accounts[]
-  investor_holdings investor_holdings[]
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  deleted_at           DateTime?
+  version              Int                    @default(1) //bump on each approved change
+  fund_type            fund_types             @relation(fields: [fund_type_id], references: [id])
+  fund_allocations     fund_allocations[]
+  fund_documents       fund_documents[]
+  fund_navs            fund_navs[]
+  investor_accounts    investor_accounts[]
+  investor_holdings    investor_holdings[]
+  aum_investor_daily   aum_investor_daily[]
+  aum_agent_daily      aum_agent_daily[]
+  mgmt_fee_agent_daily mgmt_fee_agent_daily[]
 }
 
 model fund_navs {
@@ -520,10 +523,13 @@ model agents {
   version         Int         @default(1)
   investors       investors[]
 
-  agent_level  agent_levels @relation(fields: [agent_level_id], references: [id])
-  agent_type   agent_types  @relation(fields: [agent_type_id], references: [id])
-  agent_parent agents?      @relation("agent_parent", fields: [agent_parent_id], references: [id])
-  agent_child  agents[]     @relation("agent_parent")
+  agent_level          agent_levels           @relation(fields: [agent_level_id], references: [id])
+  agent_type           agent_types            @relation(fields: [agent_type_id], references: [id])
+  agent_parent         agents?                @relation("agent_parent", fields: [agent_parent_id], references: [id])
+  agent_child          agents[]               @relation("agent_parent")
+  aum_investor_daily   aum_investor_daily[]
+  aum_agent_daily      aum_agent_daily[]
+  mgmt_fee_agent_daily mgmt_fee_agent_daily[]
 }
 
 model investors {
@@ -558,7 +564,25 @@ model investors {
   investor_accounts    investor_accounts[]
   investor_banks       investor_banks[]
   investor_holdings    investor_holdings[]
+  aum_investor_daily   aum_investor_daily[]
 }
+
+// model investor_agents {
+//   id             Int       @id @default(autoincrement())
+//   investor_id    String
+//   agent_id       Int
+//   effective_from DateTime  @db.Date
+//   effective_to   DateTime? @db.Date // null = open-ended
+
+//   created_at DateTime  @default(now())
+//   updated_at DateTime  @updatedAt
+//   deleted_at DateTime?
+
+//   investor investors @relation(fields: [investor_id], references: [id])
+//   agent    agents    @relation(fields: [agent_id], references: [id])
+
+//   @@index([investor_id, effective_from, effective_to])
+// }
 
 model investor_accounts {
   id             Int       @id @default(autoincrement())
@@ -766,6 +790,25 @@ model transaction_banks {
   bank        banks        @relation(fields: [bank_id], references: [id])
 
   @@unique([transaction_id, bank_id])
+}
+
+model aum_investor_daily {
+  id             BigInt   @id @default(autoincrement())
+  investor_id    String
+  agent_id       Int
+  fund_id        Int
+  date           DateTime @db.Date
+  units          Decimal  @db.Decimal(30, 8)
+  nav_per_unit   Decimal  @db.Decimal(30, 8)
+  aum_value      Decimal  @db.Decimal(30, 2) // units * nav_per_unit
+  management_fee Decimal  @db.Decimal(30, 2)
+
+  investor investors @relation(fields: [investor_id], references: [id])
+  fund     funds     @relation(fields: [fund_id], references: [id])
+  agent    agents    @relation(fields: [agent_id], references: [id])
+
+  @@unique([investor_id, fund_id, date])
+  @@index([fund_id, date])
 }
 
 model users {
