@@ -185,3 +185,9 @@ Tanggal	Aset	Nilai Aset	Kewajiban	NAB Total	Unit Beredar	NAB/Unit
 02 Okt	Nilai saham naik 2%	10,200,000,000	0	10,200,000,000	10,000,000	1,020
 03 Okt	Investor beli Rp1M	11,200,000,000	0	11,200,000,000	10,980,392	1,020
 04 Okt	Biaya MI Rp10jt	11,190,000,000	10,000,000	11,180,000,000	10,980,392	1,018.2
+
+
+question:
+
+1. agent movement strategy? override/hybrid
+2. mgt fee distribution to MI and agents

@@ -1,234 +1,234 @@
 -- CreateTable
-CREATE TABLE `investor_types` (
+CREATE TABLE `_investor_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `investor_types_name_key`(`name`),
+    UNIQUE INDEX `_investor_types_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `genders` (
+CREATE TABLE `_genders` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `genders_name_key`(`name`),
+    UNIQUE INDEX `_genders_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `relationships` (
+CREATE TABLE `_relationships` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `relationships_name_key`(`name`),
+    UNIQUE INDEX `_relationships_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `risk_levels` (
+CREATE TABLE `_risk_levels` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `risk_levels_name_key`(`name`),
+    UNIQUE INDEX `_risk_levels_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `address_types` (
+CREATE TABLE `_address_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `address_types_name_key`(`name`),
+    UNIQUE INDEX `_address_types_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `religions` (
+CREATE TABLE `_religions` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `religions_name_key`(`name`),
+    UNIQUE INDEX `_religions_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `transaction_types` (
+CREATE TABLE `_transaction_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `transaction_types_name_key`(`name`),
+    UNIQUE INDEX `_transaction_types_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `transaction_statuses` (
+CREATE TABLE `_transaction_statuses` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `transaction_statuses_name_key`(`name`),
+    UNIQUE INDEX `_transaction_statuses_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `educations` (
+CREATE TABLE `_educations` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `educations_name_key`(`name`),
+    UNIQUE INDEX `_educations_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `card_types` (
+CREATE TABLE `_card_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `card_types_name_key`(`name`),
+    UNIQUE INDEX `_card_types_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `incomes` (
+CREATE TABLE `_incomes` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `incomes_name_key`(`name`),
+    UNIQUE INDEX `_incomes_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `income_sources` (
+CREATE TABLE `_income_sources` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `income_sources_name_key`(`name`),
+    UNIQUE INDEX `_income_sources_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `maritals` (
+CREATE TABLE `_maritals` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `maritals_name_key`(`name`),
+    UNIQUE INDEX `_maritals_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `nationalities` (
+CREATE TABLE `_nationalities` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `nationalities_name_key`(`name`),
+    UNIQUE INDEX `_nationalities_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `jobs` (
+CREATE TABLE `_jobs` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `jobs_name_key`(`name`),
+    UNIQUE INDEX `_jobs_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `job_categories` (
+CREATE TABLE `_job_categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `job_categories_name_key`(`name`),
+    UNIQUE INDEX `_job_categories_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `job_roles` (
+CREATE TABLE `_job_roles` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `job_roles_name_key`(`name`),
+    UNIQUE INDEX `_job_roles_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `agent_types` (
+CREATE TABLE `_agent_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `agent_types_name_key`(`name`),
+    UNIQUE INDEX `_agent_types_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `agent_levels` (
+CREATE TABLE `_agent_levels` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `fee` DOUBLE NOT NULL,
+    `fee` DECIMAL(30, 4) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `agent_levels_name_key`(`name`),
+    UNIQUE INDEX `_agent_levels_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `banks` (
+CREATE TABLE `_banks` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `code` VARCHAR(191) NOT NULL,
@@ -239,13 +239,13 @@ CREATE TABLE `banks` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `banks_name_key`(`name`),
-    UNIQUE INDEX `banks_code_key`(`code`),
+    UNIQUE INDEX `_banks_name_key`(`name`),
+    UNIQUE INDEX `_banks_code_key`(`code`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `bank_branchs` (
+CREATE TABLE `_bank_branchs` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `bank_id` INTEGER NOT NULL,
@@ -253,12 +253,12 @@ CREATE TABLE `bank_branchs` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `bank_branchs_name_key`(`name`),
+    UNIQUE INDEX `_bank_branchs_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `holidays` (
+CREATE TABLE `_holidays` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `date` DATETIME(3) NOT NULL,
@@ -266,12 +266,12 @@ CREATE TABLE `holidays` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `holidays_date_key`(`date`),
+    UNIQUE INDEX `_holidays_date_key`(`date`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `fund_types` (
+CREATE TABLE `_fund_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `risk_point` INTEGER NOT NULL,
@@ -280,24 +280,24 @@ CREATE TABLE `fund_types` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `fund_types_name_key`(`name`),
+    UNIQUE INDEX `_fund_types_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `corporate_legals` (
+CREATE TABLE `_corporate_legals` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `corporate_legals_name_key`(`name`),
+    UNIQUE INDEX `_corporate_legals_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `fund_asset_types` (
+CREATE TABLE `_fund_asset_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `code` VARCHAR(191) NOT NULL,
@@ -305,12 +305,12 @@ CREATE TABLE `fund_asset_types` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `fund_asset_types_code_key`(`code`),
+    UNIQUE INDEX `_fund_asset_types_code_key`(`code`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `fund_document_types` (
+CREATE TABLE `_fund_document_types` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -321,13 +321,37 @@ CREATE TABLE `fund_document_types` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `fund_distribution_policies` (
+CREATE TABLE `_fund_distribution_policies` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_payment_methods` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `_payment_methods_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_auth_contacts` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `_auth_contacts_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -361,19 +385,19 @@ CREATE TABLE `funds` (
     `min_rest_red_amount` DOUBLE NOT NULL,
     `min_rest_switch` ENUM('UNIT', 'AMOUNT') NOT NULL DEFAULT 'AMOUNT',
     `min_rest_switch_amount` DOUBLE NOT NULL,
-    `nav` DOUBLE NOT NULL,
-    `nav_per_unit` DOUBLE NOT NULL,
-    `outstanding_unit` DOUBLE NOT NULL,
-    `nav_updated_at` DATETIME(3) NULL,
-    `initial_nav` DOUBLE NOT NULL,
-    `initial_unit` DOUBLE NOT NULL,
-    `initial_nav_per_unit` DOUBLE NOT NULL,
+    `nav` DECIMAL(30, 4) NOT NULL,
+    `nav_per_unit` DECIMAL(30, 4) NOT NULL,
+    `outstanding_unit` DECIMAL(30, 4) NOT NULL,
+    `nav_updated_at` DATE NULL,
+    `initial_nav` DECIMAL(30, 4) NOT NULL,
+    `initial_unit` DECIMAL(30, 4) NOT NULL,
+    `initial_nav_per_unit` DECIMAL(30, 4) NOT NULL,
     `max_investors` INTEGER NOT NULL DEFAULT 0,
     `max_hold` INTEGER NOT NULL DEFAULT 0,
     `max_hold_amount` DOUBLE NOT NULL DEFAULT 0,
     `unit_precision` INTEGER NOT NULL DEFAULT 4,
-    `management_fee_rate` DOUBLE NOT NULL,
-    `valuation_frequency` INTEGER NOT NULL DEFAULT 365,
+    `management_fee_rate` DECIMAL(10, 4) NOT NULL,
+    `valuation_basis` INTEGER NOT NULL DEFAULT 365,
     `start_date` DATETIME(3) NOT NULL,
     `end_date` DATETIME(3) NULL,
     `can_switch_to` VARCHAR(191) NOT NULL DEFAULT 'all',
@@ -398,6 +422,23 @@ CREATE TABLE `funds` (
     `version` INTEGER NOT NULL DEFAULT 1,
 
     UNIQUE INDEX `funds_code_key`(`code`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `fund_navs` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `fund_id` INTEGER NOT NULL,
+    `date` DATE NOT NULL,
+    `nav` DECIMAL(30, 4) NOT NULL,
+    `nav_per_unit` DECIMAL(30, 4) NOT NULL,
+    `outstanding_unit` DECIMAL(30, 4) NOT NULL,
+    `management_fee` DECIMAL(30, 4) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `fund_navs_fund_id_date_key`(`fund_id`, `date`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -471,6 +512,20 @@ CREATE TABLE `investors` (
 
     UNIQUE INDEX `investors_email_key`(`email`),
     UNIQUE INDEX `investors_sid_key`(`sid`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `investor_accounts` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `fund_id` INTEGER NOT NULL,
+    `account_number` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `investor_accounts_investor_id_fund_id_key`(`investor_id`, `fund_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -554,6 +609,98 @@ CREATE TABLE `investor_addresses` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `investor_banks` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `bank_id` INTEGER NOT NULL,
+    `bank_branch_id` INTEGER NULL,
+    `account_number` VARCHAR(191) NOT NULL,
+    `account_name` VARCHAR(191) NOT NULL,
+    `is_active` BOOLEAN NOT NULL DEFAULT true,
+    `is_primary` BOOLEAN NOT NULL DEFAULT false,
+    `remarks` TEXT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `investor_auth_contacts` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `auth_contact_id` INTEGER NOT NULL,
+    `full_name` VARCHAR(191) NOT NULL,
+    `phone_number` VARCHAR(191) NULL,
+    `email` VARCHAR(191) NULL,
+    `birth_date` DATE NULL,
+    `address` VARCHAR(191) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `investor_holdings` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `investor_account_id` INTEGER NOT NULL,
+    `transaction_id` INTEGER NOT NULL,
+    `fund_id` INTEGER NOT NULL,
+    `units_before` DECIMAL(30, 4) NOT NULL,
+    `units_after` DECIMAL(30, 4) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `transactions` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `transaction_type_id` INTEGER NOT NULL,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `investor_account_id` INTEGER NOT NULL,
+    `fund_id` INTEGER NOT NULL,
+    `agent_id` INTEGER NOT NULL,
+    `reference_no` VARCHAR(191) NOT NULL,
+    `transaction_date` DATETIME(3) NOT NULL,
+    `nav_date` DATE NOT NULL,
+    `nav_per_unit` DECIMAL(30, 4) NOT NULL,
+    `units` DECIMAL(30, 4) NOT NULL,
+    `settlement_date` DATE NOT NULL,
+    `amount` DECIMAL(30, 4) NOT NULL,
+    `net_amount` DECIMAL(30, 4) NOT NULL,
+    `fee` DECIMAL(30, 4) NOT NULL,
+    `is_redeem_all` BOOLEAN NOT NULL DEFAULT false,
+    `source_transaction_id` INTEGER NULL,
+    `payment_method_id` INTEGER NOT NULL,
+    `remarks` TEXT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `transaction_banks` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `transaction_id` INTEGER NOT NULL,
+    `bank_id` INTEGER NOT NULL,
+    `bank_branch_id` INTEGER NULL,
+    `account_number` VARCHAR(191) NOT NULL,
+    `account_name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `deleted_at` DATETIME(3) NULL,
+
+    UNIQUE INDEX `transaction_banks_transaction_id_bank_id_key`(`transaction_id`, `bank_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -645,28 +792,31 @@ CREATE TABLE `journals` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `bank_branchs` ADD CONSTRAINT `bank_branchs_bank_id_fkey` FOREIGN KEY (`bank_id`) REFERENCES `banks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `_bank_branchs` ADD CONSTRAINT `_bank_branchs_bank_id_fkey` FOREIGN KEY (`bank_id`) REFERENCES `_banks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `funds` ADD CONSTRAINT `funds_fund_type_id_fkey` FOREIGN KEY (`fund_type_id`) REFERENCES `fund_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `funds` ADD CONSTRAINT `funds_fund_type_id_fkey` FOREIGN KEY (`fund_type_id`) REFERENCES `_fund_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `fund_navs` ADD CONSTRAINT `fund_navs_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `fund_allocations` ADD CONSTRAINT `fund_allocations_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `fund_allocations` ADD CONSTRAINT `fund_allocations_fund_asset_type_id_fkey` FOREIGN KEY (`fund_asset_type_id`) REFERENCES `fund_asset_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `fund_allocations` ADD CONSTRAINT `fund_allocations_fund_asset_type_id_fkey` FOREIGN KEY (`fund_asset_type_id`) REFERENCES `_fund_asset_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `fund_documents` ADD CONSTRAINT `fund_documents_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `fund_documents` ADD CONSTRAINT `fund_documents_fund_document_type_id_fkey` FOREIGN KEY (`fund_document_type_id`) REFERENCES `fund_document_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `fund_documents` ADD CONSTRAINT `fund_documents_fund_document_type_id_fkey` FOREIGN KEY (`fund_document_type_id`) REFERENCES `_fund_document_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_level_id_fkey` FOREIGN KEY (`agent_level_id`) REFERENCES `agent_levels`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_level_id_fkey` FOREIGN KEY (`agent_level_id`) REFERENCES `_agent_levels`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_type_id_fkey` FOREIGN KEY (`agent_type_id`) REFERENCES `agent_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_type_id_fkey` FOREIGN KEY (`agent_type_id`) REFERENCES `_agent_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_parent_id_fkey` FOREIGN KEY (`agent_parent_id`) REFERENCES `agents`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -675,61 +825,97 @@ ALTER TABLE `agents` ADD CONSTRAINT `agents_agent_parent_id_fkey` FOREIGN KEY (`
 ALTER TABLE `investors` ADD CONSTRAINT `investors_agent_id_fkey` FOREIGN KEY (`agent_id`) REFERENCES `agents`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_investor_type_id_fkey` FOREIGN KEY (`investor_type_id`) REFERENCES `investor_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investors` ADD CONSTRAINT `investors_investor_type_id_fkey` FOREIGN KEY (`investor_type_id`) REFERENCES `_investor_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investors` ADD CONSTRAINT `investors_risk_level_id_fkey` FOREIGN KEY (`risk_level_id`) REFERENCES `risk_levels`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `investors` ADD CONSTRAINT `investors_risk_level_id_fkey` FOREIGN KEY (`risk_level_id`) REFERENCES `_risk_levels`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_accounts` ADD CONSTRAINT `investor_accounts_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_accounts` ADD CONSTRAINT `investor_accounts_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_income_id_fkey` FOREIGN KEY (`income_id`) REFERENCES `incomes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_income_id_fkey` FOREIGN KEY (`income_id`) REFERENCES `_incomes`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_income_source_id_fkey` FOREIGN KEY (`income_source_id`) REFERENCES `income_sources`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_income_source_id_fkey` FOREIGN KEY (`income_source_id`) REFERENCES `_income_sources`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_marital_id_fkey` FOREIGN KEY (`marital_id`) REFERENCES `maritals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_marital_id_fkey` FOREIGN KEY (`marital_id`) REFERENCES `_maritals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_nationality_id_fkey` FOREIGN KEY (`nationality_id`) REFERENCES `nationalities`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_nationality_id_fkey` FOREIGN KEY (`nationality_id`) REFERENCES `_nationalities`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_id_fkey` FOREIGN KEY (`job_id`) REFERENCES `jobs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_id_fkey` FOREIGN KEY (`job_id`) REFERENCES `_jobs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_category_id_fkey` FOREIGN KEY (`job_category_id`) REFERENCES `job_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_category_id_fkey` FOREIGN KEY (`job_category_id`) REFERENCES `_job_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_role_id_fkey` FOREIGN KEY (`job_role_id`) REFERENCES `job_roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_job_role_id_fkey` FOREIGN KEY (`job_role_id`) REFERENCES `_job_roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_gender_id_fkey` FOREIGN KEY (`gender_id`) REFERENCES `genders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_gender_id_fkey` FOREIGN KEY (`gender_id`) REFERENCES `_genders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_education_id_fkey` FOREIGN KEY (`education_id`) REFERENCES `educations`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_education_id_fkey` FOREIGN KEY (`education_id`) REFERENCES `_educations`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_card_type_id_fkey` FOREIGN KEY (`card_type_id`) REFERENCES `card_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_individuals` ADD CONSTRAINT `investor_individuals_card_type_id_fkey` FOREIGN KEY (`card_type_id`) REFERENCES `_card_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investor_corporates` ADD CONSTRAINT `investor_corporates_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_corporates` ADD CONSTRAINT `investor_corporates_corporate_legal_id_fkey` FOREIGN KEY (`corporate_legal_id`) REFERENCES `corporate_legals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_corporates` ADD CONSTRAINT `investor_corporates_corporate_legal_id_fkey` FOREIGN KEY (`corporate_legal_id`) REFERENCES `_corporate_legals`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investor_heirs` ADD CONSTRAINT `investor_heirs_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_heirs` ADD CONSTRAINT `investor_heirs_relation_id_fkey` FOREIGN KEY (`relation_id`) REFERENCES `relationships`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_heirs` ADD CONSTRAINT `investor_heirs_relation_id_fkey` FOREIGN KEY (`relation_id`) REFERENCES `_relationships`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `investor_addresses` ADD CONSTRAINT `investor_addresses_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `investor_addresses` ADD CONSTRAINT `investor_addresses_address_type_id_fkey` FOREIGN KEY (`address_type_id`) REFERENCES `address_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `investor_addresses` ADD CONSTRAINT `investor_addresses_address_type_id_fkey` FOREIGN KEY (`address_type_id`) REFERENCES `_address_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_banks` ADD CONSTRAINT `investor_banks_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_banks` ADD CONSTRAINT `investor_banks_bank_id_fkey` FOREIGN KEY (`bank_id`) REFERENCES `_banks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_banks` ADD CONSTRAINT `investor_banks_bank_branch_id_fkey` FOREIGN KEY (`bank_branch_id`) REFERENCES `_bank_branchs`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_holdings` ADD CONSTRAINT `investor_holdings_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_holdings` ADD CONSTRAINT `investor_holdings_investor_account_id_fkey` FOREIGN KEY (`investor_account_id`) REFERENCES `investor_accounts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_holdings` ADD CONSTRAINT `investor_holdings_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `investor_holdings` ADD CONSTRAINT `investor_holdings_transaction_id_fkey` FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_transaction_type_id_fkey` FOREIGN KEY (`transaction_type_id`) REFERENCES `_transaction_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transaction_banks` ADD CONSTRAINT `transaction_banks_transaction_id_fkey` FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `transaction_banks` ADD CONSTRAINT `transaction_banks_bank_id_fkey` FOREIGN KEY (`bank_id`) REFERENCES `_banks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `user_roles` ADD CONSTRAINT `user_roles_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

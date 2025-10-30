@@ -95,7 +95,7 @@ const main = async () => {
         initial_nav_per_unit: 1_000,
 
         management_fee_rate: 2, //2%
-        yearly_basis: 365,
+        valuation_basis: 365,
 
         start_date: new Date(start_date),
 
@@ -124,6 +124,34 @@ const main = async () => {
       },
       update: {},
     });
+
+    // seed navs
+    // const navs = await prisma.fund_navs.findMany({ where: { fund_id: _fund.id } })
+    // if (navs.length == 0) {
+    // create nav from start_date to now
+    const _start_date = new Date(_fund.start_date);
+    const now = new Date();
+    const days = Math.ceil((now.getTime() - _start_date.getTime()) / (1000 * 60 * 60 * 24));
+    for (let i = 0; i < days; i++) {
+      const date = new Date(start_date);
+      date.setDate(date.getDate() + i);
+      // fake increase / decrease nav from initial_nav
+      const initial_nav = _fund.initial_nav;
+      const initial_unit = _fund.initial_unit;
+      const nav = initial_nav.toNumber() + (initial_nav.toNumber() * faker.number.float({ min: -0.01, max: 0.01 }));
+      const nav_per_unit = nav / initial_unit.toNumber();
+      const outstanding_unit = initial_unit.toNumber() + (initial_unit.toNumber() * faker.number.float({ min: -0.01, max: 0.01 }));
+      const management_fee_rate = _fund.management_fee_rate;
+      const management_fee = nav * management_fee_rate.toNumber() / 100 / _fund.valuation_basis;
+      const formatted_date = `${date.toISOString().split('T')[0]}`;
+      await prisma.fund_navs.upsert({
+        where: { fund_id_date: { fund_id: _fund.id, date: new Date(formatted_date) } },
+        create: { fund_id: _fund.id, date, nav: nav, nav_per_unit: nav_per_unit, outstanding_unit: outstanding_unit, management_fee },
+        update: { nav: nav, nav_per_unit: nav_per_unit, outstanding_unit: outstanding_unit, management_fee },
+      })
+    }
+    // }
+
   };
 
   const funds = [

@@ -2,6 +2,8 @@ import prisma from '../index.js';
 
 export default async () => {
   const investorTypes = ['Individual', 'Corporate', 'Selling Agent'];
+  const authContacts = ['Komisaris', 'Direksi'];
+  const paymentMethods = ['Transfer', 'Virtual Account'];
   const fundAssetTypes = [
     {
       name: 'Corporate Bonds',
@@ -356,6 +358,20 @@ export default async () => {
         where: { code: fundAssetType.code },
         create: { name: fundAssetType.name, code: fundAssetType.code },
         update: { name: fundAssetType.name, code: fundAssetType.code },
+      });
+    }),
+    paymentMethods.map(async (paymentMethod) => {
+      await prisma.payment_methods.upsert({
+        where: { name: paymentMethod },
+        create: { name: paymentMethod },
+        update: { name: paymentMethod },
+      });
+    }),
+    authContacts.map(async (authContact) => {
+      await prisma.auth_contacts.upsert({
+        where: { name: authContact },
+        create: { name: authContact },
+        update: { name: authContact },
       });
     }),
     // investorStatuses.map(async (investorStatus) => {

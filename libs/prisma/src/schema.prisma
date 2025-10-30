@@ -36,6 +36,8 @@ model investor_types {
   updated_at DateTime    @updatedAt
   deleted_at DateTime?
   investors  investors[]
+
+  @@map("_investor_types")
 }
 
 // model investor_statuses {
@@ -54,6 +56,8 @@ model genders {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_genders")
 }
 
 model relationships {
@@ -63,6 +67,8 @@ model relationships {
   updated_at     DateTime         @updatedAt
   deleted_at     DateTime?
   investor_heirs investor_heirs[]
+
+  @@map("_relationships")
 }
 
 model risk_levels {
@@ -72,6 +78,8 @@ model risk_levels {
   updated_at DateTime    @updatedAt
   deleted_at DateTime?
   investors  investors[]
+
+  @@map("_risk_levels")
 }
 
 model address_types {
@@ -81,6 +89,8 @@ model address_types {
   updated_at         DateTime             @updatedAt
   deleted_at         DateTime?
   investor_addresses investor_addresses[]
+
+  @@map("_address_types")
 }
 
 model religions {
@@ -89,14 +99,19 @@ model religions {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@map("_religions")
 }
 
 model transaction_types {
-  id         Int       @id @default(autoincrement())
-  name       String    @unique
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  deleted_at   DateTime?
+  transactions transactions[]
+
+  @@map("_transaction_types")
 }
 
 model transaction_statuses {
@@ -105,6 +120,8 @@ model transaction_statuses {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@map("_transaction_statuses")
 }
 
 model educations {
@@ -114,6 +131,8 @@ model educations {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_educations")
 }
 
 model card_types {
@@ -123,6 +142,8 @@ model card_types {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_card_types")
 }
 
 model incomes {
@@ -132,6 +153,8 @@ model incomes {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_incomes")
 }
 
 model income_sources {
@@ -141,6 +164,8 @@ model income_sources {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_income_sources")
 }
 
 model maritals {
@@ -150,6 +175,8 @@ model maritals {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_maritals")
 }
 
 model nationalities {
@@ -159,6 +186,8 @@ model nationalities {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_nationalities")
 }
 
 model jobs {
@@ -168,6 +197,8 @@ model jobs {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_jobs")
 }
 
 model job_categories {
@@ -177,6 +208,8 @@ model job_categories {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_job_categories")
 }
 
 model job_roles {
@@ -186,6 +219,8 @@ model job_roles {
   updated_at           DateTime               @updatedAt
   deleted_at           DateTime?
   investor_individuals investor_individuals[]
+
+  @@map("_job_roles")
 }
 
 model agent_types {
@@ -195,29 +230,37 @@ model agent_types {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
   agents     agents[]
+
+  @@map("_agent_types")
 }
 
 model agent_levels {
   id         Int       @id @default(autoincrement())
   name       String    @unique
-  fee        Float
+  fee        Decimal   @db.Decimal(30, 4)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
   agents     agents[]
+
+  @@map("_agent_levels")
 }
 
 model banks {
-  id           Int            @id @default(autoincrement())
-  name         String         @unique
-  code         String         @unique
-  logo         String?
-  is_active    Boolean
-  bi_code      String?
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  deleted_at   DateTime?
-  bank_branchs bank_branchs[]
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  code              String              @unique
+  logo              String?
+  is_active         Boolean
+  bi_code           String?
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  deleted_at        DateTime?
+  bank_branchs      bank_branchs[]
+  transaction_banks transaction_banks[]
+  investor_banks    investor_banks[]
+
+  @@map("_banks")
 }
 
 model bank_branchs {
@@ -228,7 +271,10 @@ model bank_branchs {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
 
-  bank banks @relation(fields: [bank_id], references: [id])
+  bank           banks            @relation(fields: [bank_id], references: [id])
+  investor_banks investor_banks[]
+
+  @@map("_bank_branchs")
 }
 
 model holidays {
@@ -238,6 +284,8 @@ model holidays {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@map("_holidays")
 }
 
 model fund_types {
@@ -249,6 +297,8 @@ model fund_types {
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
   funds      funds[]
+
+  @@map("_fund_types")
 }
 
 model corporate_legals {
@@ -258,6 +308,8 @@ model corporate_legals {
   updated_at          DateTime              @updatedAt
   deleted_at          DateTime?
   investor_corporates investor_corporates[]
+
+  @@map("_corporate_legals")
 }
 
 model fund_asset_types {
@@ -268,6 +320,8 @@ model fund_asset_types {
   updated_at       DateTime           @updatedAt
   deleted_at       DateTime?
   fund_allocations fund_allocations[]
+
+  @@map("_fund_asset_types")
 }
 
 model fund_document_types {
@@ -277,6 +331,8 @@ model fund_document_types {
   updated_at     DateTime         @updatedAt
   deleted_at     DateTime?
   fund_documents fund_documents[]
+
+  @@map("_fund_document_types")
 }
 
 model fund_distribution_policies {
@@ -285,6 +341,28 @@ model fund_distribution_policies {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@map("_fund_distribution_policies")
+}
+
+model payment_methods {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@map("_payment_methods")
+}
+
+model auth_contacts {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@map("_auth_contacts")
 }
 
 // end of references table
@@ -325,14 +403,14 @@ model funds {
   min_rest_switch        MinRestType @default(AMOUNT) // default -> amount
   min_rest_switch_amount Float // minimal rest amount for switch
 
-  nav              Float // nilai aktiva bersih / net asset value
-  nav_per_unit     Float // nav per unit
-  outstanding_unit Float // total unit yang beredar
-  nav_updated_at   DateTime? // last updated NAV
+  nav              Decimal   @db.Decimal(30, 4) // nilai aktiva bersih / net asset value
+  nav_per_unit     Decimal   @db.Decimal(30, 4) // nav per unit
+  outstanding_unit Decimal   @db.Decimal(30, 4) // total unit yang beredar
+  nav_updated_at   DateTime? @db.Date // last updated NAV
 
-  initial_nav          Float // modal yang disetor diawal
-  initial_unit         Float // initial unit = initial nav / initial_nav_per_unit
-  initial_nav_per_unit Float // nav per unit diawal
+  initial_nav          Decimal @db.Decimal(30, 4) // modal yang disetor diawal
+  initial_unit         Decimal @db.Decimal(30, 4) // initial unit = initial nav / initial_nav_per_unit
+  initial_nav_per_unit Decimal @db.Decimal(30, 4) // nav per unit diawal
 
   max_investors   Int   @default(0) // 0 -> unlimited
   max_hold        Int   @default(0) // 0 -> unlimited -> max units investor can hold
@@ -340,8 +418,8 @@ model funds {
 
   unit_precision Int @default(4) // how many decimal places for unit -> default -> 0.01
 
-  management_fee_rate Float // Fee tahunan MI (% dari AUM)
-  yearly_basis        Int   @default(365) // pembagi mgt fee, 360,365,366
+  management_fee_rate Decimal @db.Decimal(10, 4) // Fee tahunan MI (% dari AUM)
+  valuation_basis     Int     @default(365) // pembagi mgt fee, 360,365,366
 
   start_date DateTime
   // optional: for fund that has a limited period
@@ -369,13 +447,32 @@ model funds {
   can_subscript Boolean
   can_switch    Boolean
 
-  created_at       DateTime           @default(now())
-  updated_at       DateTime           @updatedAt
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  deleted_at        DateTime?
+  version           Int                 @default(1) //bump on each approved change
+  fund_type         fund_types          @relation(fields: [fund_type_id], references: [id])
+  fund_allocations  fund_allocations[]
+  fund_documents    fund_documents[]
+  fund_navs         fund_navs[]
+  investor_accounts investor_accounts[]
+  investor_holdings investor_holdings[]
+}
+
+model fund_navs {
+  id               BigInt    @id @default(autoincrement())
+  fund_id          Int
+  date             DateTime  @db.Date
+  nav              Decimal   @db.Decimal(30, 4) // nilai aktiva bersih / net asset value
+  nav_per_unit     Decimal   @db.Decimal(30, 4) // nav per unit
+  outstanding_unit Decimal   @db.Decimal(30, 4) // total unit yang beredar
+  management_fee   Decimal   @db.Decimal(30, 4) // management fee
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
   deleted_at       DateTime?
-  version          Int                @default(1) //bump on each approved change
-  fund_type        fund_types         @relation(fields: [fund_type_id], references: [id])
-  fund_allocations fund_allocations[]
-  fund_documents   fund_documents[]
+  fund             funds     @relation(fields: [fund_id], references: [id])
+
+  @@unique([fund_id, date])
 }
 
 model fund_allocations {
@@ -458,6 +555,25 @@ model investors {
   risk_level           risk_levels?          @relation(fields: [risk_level_id], references: [id])
   investor_individuals investor_individuals?
   investor_corporates  investor_corporates?
+  investor_accounts    investor_accounts[]
+  investor_banks       investor_banks[]
+  investor_holdings    investor_holdings[]
+}
+
+model investor_accounts {
+  id             Int       @id @default(autoincrement())
+  investor_id    String
+  fund_id        Int
+  account_number String // ifua
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  deleted_at     DateTime?
+
+  investor          investors           @relation(fields: [investor_id], references: [id])
+  fund              funds               @relation(fields: [fund_id], references: [id])
+  investor_holdings investor_holdings[]
+
+  @@unique([investor_id, fund_id])
 }
 
 model investor_individuals {
@@ -548,6 +664,108 @@ model investor_addresses {
 
   investor     investors     @relation(fields: [investor_id], references: [id])
   address_type address_types @relation(fields: [address_type_id], references: [id])
+}
+
+model investor_banks {
+  id             Int       @id @default(autoincrement())
+  investor_id    String
+  bank_id        Int
+  bank_branch_id Int?
+  account_number String
+  account_name   String
+  is_active      Boolean   @default(true)
+  is_primary     Boolean   @default(false)
+  remarks        String?   @db.Text
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  deleted_at     DateTime?
+
+  investor    investors     @relation(fields: [investor_id], references: [id])
+  bank        banks         @relation(fields: [bank_id], references: [id])
+  bank_branch bank_branchs? @relation(fields: [bank_branch_id], references: [id])
+}
+
+// for corporate auth contacts
+model investor_auth_contacts {
+  id              Int       @id @default(autoincrement())
+  investor_id     String
+  auth_contact_id Int
+  full_name       String
+  phone_number    String?
+  email           String?
+  birth_date      DateTime? @db.Date
+  address         String?
+}
+
+// tracks investors units (IN/OUT)
+model investor_holdings {
+  id                  Int       @id @default(autoincrement())
+  investor_id         String
+  investor_account_id Int
+  transaction_id      Int
+  fund_id             Int
+  units_before        Decimal   @db.Decimal(30, 4)
+  units_after         Decimal   @db.Decimal(30, 4)
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
+  deleted_at          DateTime?
+
+  investor         investors         @relation(fields: [investor_id], references: [id])
+  investor_account investor_accounts @relation(fields: [investor_account_id], references: [id])
+  fund             funds             @relation(fields: [fund_id], references: [id])
+  transaction      transactions      @relation(fields: [transaction_id], references: [id])
+}
+
+model transactions {
+  id                  Int      @id @default(autoincrement())
+  transaction_type_id Int
+  investor_id         String
+  investor_account_id Int
+  fund_id             Int
+  agent_id            Int
+  reference_no        String
+  transaction_date    DateTime
+  nav_date            DateTime @db.Date
+  nav_per_unit        Decimal  @db.Decimal(30, 4) // harga nav per unit
+  units               Decimal  @db.Decimal(30, 4) // unit yang dibeli/dikeluarkan
+  settlement_date     DateTime @db.Date
+  amount              Decimal  @db.Decimal(30, 4)
+  net_amount          Decimal  @db.Decimal(30, 4) // amount - fee
+  fee                 Decimal  @db.Decimal(30, 4)
+
+  // redemption
+  is_redeem_all Boolean @default(false)
+
+  // swtiching
+  source_transaction_id Int? // for switching in
+
+  payment_method_id Int
+  remarks           String?   @db.Text
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime?
+
+  type              transaction_types   @relation(fields: [transaction_type_id], references: [id])
+  transaction_banks transaction_banks[]
+  investor_holdings investor_holdings[]
+}
+
+// tracking transfer history
+model transaction_banks {
+  id             Int       @id @default(autoincrement())
+  transaction_id Int
+  bank_id        Int
+  bank_branch_id Int?
+  account_number String
+  account_name   String
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  deleted_at     DateTime?
+
+  transaction transactions @relation(fields: [transaction_id], references: [id])
+  bank        banks        @relation(fields: [bank_id], references: [id])
+
+  @@unique([transaction_id, bank_id])
 }
 
 model users {
