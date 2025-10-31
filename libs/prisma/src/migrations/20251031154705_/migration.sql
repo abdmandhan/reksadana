@@ -261,7 +261,7 @@ CREATE TABLE `_bank_branchs` (
 CREATE TABLE `_holidays` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `date` DATETIME(3) NOT NULL,
+    `date` DATE NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
@@ -385,10 +385,6 @@ CREATE TABLE `funds` (
     `min_rest_red_amount` DOUBLE NOT NULL,
     `min_rest_switch` ENUM('UNIT', 'AMOUNT') NOT NULL DEFAULT 'AMOUNT',
     `min_rest_switch_amount` DOUBLE NOT NULL,
-    `nav` DECIMAL(30, 4) NOT NULL,
-    `nav_per_unit` DECIMAL(30, 4) NOT NULL,
-    `outstanding_unit` DECIMAL(30, 4) NOT NULL,
-    `nav_updated_at` DATE NULL,
     `initial_nav` DECIMAL(30, 4) NOT NULL,
     `initial_unit` DECIMAL(30, 4) NOT NULL,
     `initial_nav_per_unit` DECIMAL(30, 4) NOT NULL,
@@ -438,6 +434,7 @@ CREATE TABLE `fund_navs` (
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
+    INDEX `fund_navs_fund_id_date_idx`(`fund_id`, `date`),
     UNIQUE INDEX `fund_navs_fund_id_date_key`(`fund_id`, `date`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -653,6 +650,7 @@ CREATE TABLE `investor_holdings` (
     `fund_id` INTEGER NOT NULL,
     `units_before` DECIMAL(30, 4) NOT NULL,
     `units_after` DECIMAL(30, 4) NOT NULL,
+    `delta_units` DECIMAL(30, 4) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
@@ -701,6 +699,24 @@ CREATE TABLE `transaction_banks` (
     `deleted_at` DATETIME(3) NULL,
 
     UNIQUE INDEX `transaction_banks_transaction_id_bank_id_key`(`transaction_id`, `bank_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `aum_investor_daily` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `investor_id` VARCHAR(191) NOT NULL,
+    `agent_id` INTEGER NOT NULL,
+    `fund_id` INTEGER NOT NULL,
+    `date` DATE NOT NULL,
+    `units` DECIMAL(30, 8) NOT NULL,
+    `nav_per_unit` DECIMAL(30, 8) NOT NULL,
+    `aum_value` DECIMAL(30, 2) NOT NULL,
+    `management_fee` DECIMAL(30, 2) NOT NULL,
+
+    INDEX `aum_investor_daily_agent_id_date_idx`(`agent_id`, `date`),
+    INDEX `aum_investor_daily_fund_id_date_idx`(`fund_id`, `date`),
+    UNIQUE INDEX `aum_investor_daily_investor_id_fund_id_date_key`(`investor_id`, `fund_id`, `date`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -912,10 +928,22 @@ ALTER TABLE `investor_holdings` ADD CONSTRAINT `investor_holdings_transaction_id
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_transaction_type_id_fkey` FOREIGN KEY (`transaction_type_id`) REFERENCES `_transaction_types`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_payment_method_id_fkey` FOREIGN KEY (`payment_method_id`) REFERENCES `_payment_methods`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `transaction_banks` ADD CONSTRAINT `transaction_banks_transaction_id_fkey` FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `transaction_banks` ADD CONSTRAINT `transaction_banks_bank_id_fkey` FOREIGN KEY (`bank_id`) REFERENCES `_banks`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `aum_investor_daily` ADD CONSTRAINT `aum_investor_daily_investor_id_fkey` FOREIGN KEY (`investor_id`) REFERENCES `investors`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `aum_investor_daily` ADD CONSTRAINT `aum_investor_daily_fund_id_fkey` FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `aum_investor_daily` ADD CONSTRAINT `aum_investor_daily_agent_id_fkey` FOREIGN KEY (`agent_id`) REFERENCES `agents`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `user_roles` ADD CONSTRAINT `user_roles_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

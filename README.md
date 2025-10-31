@@ -174,7 +174,6 @@ valuation_frequency	Frekuensi NAB dihitung (harian / mingguan)
 
 distribution_policy	Apakah dividen dibagikan atau reinvestasi
 
-
 💡 Setelah hari pertama, NAB akan berubah tergantung nilai pasar aset, biaya, dan transaksi investor.
 
 ===
@@ -194,3 +193,10 @@ question:
 
 
 kalau agent effective date nya udah habis atau agent nya udah resign, investor gapunya agent masih bisa transaksi atau agentnya diganti?
+
+
+about agents, i'm still not sure about the regulation, is the investors must have an agent?
+
+transaction status, i'm thinking about we don't need it because whenever we store the data into transactions table, it means it's approved, because it will be going to the journaling process, do you have any concern?
+
+aum_investor_daily, this table will have so many rows, do you have any idea/alternatives?

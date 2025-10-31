@@ -13,8 +13,9 @@ describe('AppService', () => {
   });
 
   describe('getData', () => {
-    it('should return "Hello API"', () => {
-      expect(service.getData()).toEqual({message: 'Hello API'});
+    it('should return "Hello API"', async () => {
+      const result = await service.getData();
+      expect(result).toMatchObject({ message: 'Hello API with Prisma!' });
     });
   });
 });

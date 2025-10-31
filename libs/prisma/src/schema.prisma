@@ -280,7 +280,7 @@ model bank_branchs {
 model holidays {
   id         Int       @id @default(autoincrement())
   name       String
-  date       DateTime  @unique
+  date       DateTime  @unique @db.Date
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
@@ -346,11 +346,12 @@ model fund_distribution_policies {
 }
 
 model payment_methods {
-  id         Int       @id @default(autoincrement())
-  name       String    @unique
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  deleted_at   DateTime?
+  transactions transactions[]
 
   @@map("_payment_methods")
 }
@@ -403,11 +404,6 @@ model funds {
   min_rest_switch        MinRestType @default(AMOUNT) // default -> amount
   min_rest_switch_amount Float // minimal rest amount for switch
 
-  nav              Decimal   @db.Decimal(30, 4) // nilai aktiva bersih / net asset value
-  nav_per_unit     Decimal   @db.Decimal(30, 4) // nav per unit
-  outstanding_unit Decimal   @db.Decimal(30, 4) // total unit yang beredar
-  nav_updated_at   DateTime? @db.Date // last updated NAV
-
   initial_nav          Decimal @db.Decimal(30, 4) // modal yang disetor diawal
   initial_unit         Decimal @db.Decimal(30, 4) // initial unit = initial nav / initial_nav_per_unit
   initial_nav_per_unit Decimal @db.Decimal(30, 4) // nav per unit diawal
@@ -447,19 +443,17 @@ model funds {
   can_subscript Boolean
   can_switch    Boolean
 
-  created_at           DateTime               @default(now())
-  updated_at           DateTime               @updatedAt
-  deleted_at           DateTime?
-  version              Int                    @default(1) //bump on each approved change
-  fund_type            fund_types             @relation(fields: [fund_type_id], references: [id])
-  fund_allocations     fund_allocations[]
-  fund_documents       fund_documents[]
-  fund_navs            fund_navs[]
-  investor_accounts    investor_accounts[]
-  investor_holdings    investor_holdings[]
-  aum_investor_daily   aum_investor_daily[]
-  aum_agent_daily      aum_agent_daily[]
-  mgmt_fee_agent_daily mgmt_fee_agent_daily[]
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  deleted_at         DateTime?
+  version            Int                  @default(1) //bump on each approved change
+  fund_type          fund_types           @relation(fields: [fund_type_id], references: [id])
+  fund_allocations   fund_allocations[]
+  fund_documents     fund_documents[]
+  fund_navs          fund_navs[]
+  investor_accounts  investor_accounts[]
+  investor_holdings  investor_holdings[]
+  aum_investor_daily aum_investor_daily[]
 }
 
 model fund_navs {
@@ -476,6 +470,7 @@ model fund_navs {
   fund             funds     @relation(fields: [fund_id], references: [id])
 
   @@unique([fund_id, date])
+  @@index([fund_id, date])
 }
 
 model fund_allocations {
@@ -523,13 +518,11 @@ model agents {
   version         Int         @default(1)
   investors       investors[]
 
-  agent_level          agent_levels           @relation(fields: [agent_level_id], references: [id])
-  agent_type           agent_types            @relation(fields: [agent_type_id], references: [id])
-  agent_parent         agents?                @relation("agent_parent", fields: [agent_parent_id], references: [id])
-  agent_child          agents[]               @relation("agent_parent")
-  aum_investor_daily   aum_investor_daily[]
-  aum_agent_daily      aum_agent_daily[]
-  mgmt_fee_agent_daily mgmt_fee_agent_daily[]
+  agent_level        agent_levels         @relation(fields: [agent_level_id], references: [id])
+  agent_type         agent_types          @relation(fields: [agent_type_id], references: [id])
+  agent_parent       agents?              @relation("agent_parent", fields: [agent_parent_id], references: [id])
+  agent_child        agents[]             @relation("agent_parent")
+  aum_investor_daily aum_investor_daily[]
 }
 
 model investors {
@@ -730,6 +723,7 @@ model investor_holdings {
   fund_id             Int
   units_before        Decimal   @db.Decimal(30, 4)
   units_after         Decimal   @db.Decimal(30, 4)
+  delta_units         Decimal   @db.Decimal(30, 4)
   created_at          DateTime  @default(now())
   updated_at          DateTime  @updatedAt
   deleted_at          DateTime?
@@ -770,6 +764,7 @@ model transactions {
   deleted_at        DateTime?
 
   type              transaction_types   @relation(fields: [transaction_type_id], references: [id])
+  payment_method    payment_methods     @relation(fields: [payment_method_id], references: [id])
   transaction_banks transaction_banks[]
   investor_holdings investor_holdings[]
 }
@@ -808,6 +803,7 @@ model aum_investor_daily {
   agent    agents    @relation(fields: [agent_id], references: [id])
 
   @@unique([investor_id, fund_id, date])
+  @@index([agent_id, date])
   @@index([fund_id, date])
 }
 

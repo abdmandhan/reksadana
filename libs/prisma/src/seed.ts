@@ -85,11 +85,6 @@ const main = async () => {
         min_rest_switch: minRest[faker.number.int({ min: 0, max: minRest.length - 1 })],
         min_rest_switch_amount: minRestAmount[faker.number.int({ min: 0, max: minRestAmount.length - 1 })],
 
-        nav: 10_000_000_000,
-        nav_per_unit: 1_000,
-        outstanding_unit: 10_000_000,
-        nav_updated_at: new Date(),
-
         initial_nav: 10_000_000_000,
         initial_unit: 10_000_000,
         initial_nav_per_unit: 1_000,
